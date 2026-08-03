@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # KacherPonno · কাছের পণ্য
 
 **High-fidelity interactive prototype — CSE 350, Assignment 3.**
@@ -130,3 +131,6 @@ Electronics (HDMI cable, multimeter, LED bulb), Mobile Accessories (65W charger,
 tempered glass) and Hardware (adjustable wrench, measuring tape, drill bits) — across ten real
 Sylhet neighbourhoods: Zindabazar, Chowhatta, Amberkhana, Subid Bazar, Bandar Bazar, Kumarpara,
 Mirabazar and Uposhohor. All prices are in BDT (৳).
+=======
+# high-fidelity-prototype-350-
+>>>>>>> b237e899a3910757a5aca36a2ee3295a48e1dfb4
