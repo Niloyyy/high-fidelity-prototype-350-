@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-jade-900 font-sans text-ink antialiased;
+    overscroll-behavior: none;
+  }
+
+  /* Prices, distances and quantities are decision-critical — keep the digits
+     aligned so shoppers can compare them down a column at a glance. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+@layer components {
+  .bn {
+    @apply font-bn;
+  }
+
+  /* --- Surfaces ------------------------------------------------------- */
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card;
+  }
+
+  /* Corrugated shop-shutter texture, lifted from the roll-down shutters of
+     Bandar Bazar. Used behind brand headers to root the product locally. */
+  .shutter {
+    background-image: repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.07) 0px,
+      rgba(255, 255, 255, 0.07) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  }
+
+  .grain {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+
+  /* --- Buttons -------------------------------------------------------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-4 text-[15px] font-semibold
+      transition duration-150 ease-swift active:scale-[.97] disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-lg {
+    @apply h-[52px] rounded-2xl text-base;
+  }
+  .btn-md {
+    @apply h-11;
+  }
+  .btn-sm {
+    @apply h-9 px-3 text-[13px];
+  }
+  .btn-primary {
+    @apply bg-jade-700 text-white shadow-[0_6px_16px_-8px_rgba(11,78,63,.9)] hover:bg-jade-800;
+  }
+  .btn-gold {
+    @apply bg-marigold-400 text-jade-900 shadow-[0_6px_16px_-8px_rgba(217,140,8,.9)] hover:bg-marigold-300;
+  }
+  .btn-ghost {
+    @apply border border-line bg-surface text-ink-70 hover:bg-canvas;
+  }
+  .btn-quiet {
+    @apply bg-jade-50 text-jade-700 hover:bg-jade-100;
+  }
+
+  /* --- Chips ---------------------------------------------------------- */
+  .chip {
+    @apply inline-flex select-none items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5
+      text-[13px] font-medium transition duration-150 ease-swift active:scale-[.96];
+  }
+  .chip-off {
+    @apply border-line bg-surface text-ink-70;
+  }
+  .chip-on {
+    @apply border-jade-700 bg-jade-700 text-white;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10.5px] font-bold uppercase tracking-[.07em];
+  }
+
+  .field {
+    @apply h-12 w-full rounded-xl border border-line bg-surface px-3.5 text-[15px] text-ink outline-none
+      transition placeholder:text-ink-30 focus:border-jade-400 focus:ring-4 focus:ring-jade-100;
+  }
+
+  .label {
+    @apply mb-1.5 block text-[12.5px] font-semibold uppercase tracking-[.06em] text-ink-50;
+  }
+}
+
+@layer utilities {
+  .safe-b {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+}
+
+/* ===================================================================== */
+/*  ONE MOTION LANGUAGE                                                   */
+/*  Navigation = horizontal push/pop. Sheets = rise from the bottom.      */
+/*  State changes = 150ms ease-out. Nothing else moves.                   */
+/* ===================================================================== */
+@keyframes push-in {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes push-out {
+  from {
+    transform: translate3d(0, 0, 0);
+    filter: brightness(1);
+  }
+  to {
+    transform: translate3d(-26%, 0, 0);
+    filter: brightness(0.94);
+  }
+}
+@keyframes pop-in {
+  from {
+    transform: translate3d(-26%, 0, 0);
+    filter: brightness(0.94);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    filter: brightness(1);
+  }
+}
+@keyframes pop-out {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+.anim-push-in {
+  animation: push-in 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.anim-push-out {
+  animation: push-out 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.anim-pop-in {
+  animation: pop-in 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.anim-pop-out {
+  animation: pop-out 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.anim-sheet {
+  animation: sheet-up 0.34s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-fade {
+  animation: fade-in 0.22s ease-out both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.anim-rise {
+  animation: rise 0.36s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+.anim-toast {
+  animation: toast-in 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* Freshness dot: a slow breath, so "live" data reads as live. */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+.dot-live {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+/* Barcode scanner sweep */
+@keyframes scan {
+  0% {
+    transform: translateY(-40px);
+  }
+  50% {
+    transform: translateY(40px);
+  }
+  100% {
+    transform: translateY(-40px);
+  }
+}
+.anim-scan {
+  animation: scan 1.5s ease-in-out infinite;
+}
+
+/* A row that was just created or just changed flashes once, then settles. */
+@keyframes flash {
+  0% {
+    background-color: #fcebc2;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.anim-flash {
+  animation: flash 1.8s ease-out both;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.anim-spin {
+  animation: spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
