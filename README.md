@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # KacherPonno · কাছের পণ্য
 
 **High-fidelity interactive prototype — CSE 350, Assignment 3.**
@@ -133,4 +132,3 @@ Sylhet neighbourhoods: Zindabazar, Chowhatta, Amberkhana, Subid Bazar, Bandar Ba
 Mirabazar and Uposhohor. All prices are in BDT (৳).
 =======
 # high-fidelity-prototype-350-
->>>>>>> b237e899a3910757a5aca36a2ee3295a48e1dfb4
