@@ -162,10 +162,16 @@ function Prototype() {
 
               <Toasts items={toasts} />
 
-              {/* Phone-sized "why this screen" trigger */}
+              {/* Phone-sized "why this screen" trigger. Only Shop Detail and
+                  Add Item have a sticky action bar to clear — on the others it
+                  sat on top of the content. */}
               <button
                 onClick={() => setWhyOpen(true)}
-                className="absolute bottom-[104px] right-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-ink/85 text-white shadow-lift backdrop-blur transition active:scale-90 lg:hidden"
+                className={`absolute right-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-ink/85
+                  text-white shadow-lift backdrop-blur transition hover:bg-ink focus-visible:outline-none
+                  focus-visible:ring-[3px] focus-visible:ring-white/60 active:scale-90 lg:hidden ${
+                    ['shop', 'additem'].includes(current.screen) ? 'bottom-[104px]' : 'bottom-4'
+                  }`}
                 aria-label="Why this screen?"
               >
                 <Icon name="info" size={19} />

@@ -294,9 +294,14 @@ export default function ItemEditor({ nav, params = {} }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-2 pb-16 text-[13px] text-white/70">
-            <Icon name="spinner" size={16} className="anim-spin" />
-            Reading barcode…
+          <div className="flex flex-col items-center gap-1.5 pb-16 text-white/70">
+            <span className="flex items-center gap-2 text-[13px]">
+              <Icon name="spinner" size={16} className="anim-spin" />
+              Reading barcode…
+            </span>
+            {/* Same honesty as the CSV import: the point of this screen is to
+                watch which path a shopkeeper reaches for, not to fake a scanner. */}
+            <span className="text-[11px] text-white/45">Simulated for the prototype</span>
           </div>
         </div>
       )}

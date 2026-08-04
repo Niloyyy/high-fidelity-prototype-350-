@@ -201,7 +201,11 @@ export default function Results({ nav, params }) {
                       role="button"
                       tabIndex={0}
                       onClick={() => openShop(shop.id)}
-                      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openShop(shop.id)}
+                      onKeyDown={(e) => {
+                        if (e.key !== 'Enter' && e.key !== ' ') return
+                        e.preventDefault() // Space would otherwise scroll the list
+                        openShop(shop.id)
+                      }}
                       className={`relative w-full cursor-pointer overflow-hidden rounded-2xl border bg-surface p-3.5 text-left shadow-card
                         transition duration-200 ease-swift hover:shadow-lift active:scale-[.99]
                         ${shop.sponsored ? 'border-marigold-200' : 'border-line'}`}

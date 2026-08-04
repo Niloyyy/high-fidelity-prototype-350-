@@ -186,10 +186,25 @@ export function Sheet({ open, onClose, title, subtitle, children, footer }) {
   useEffect(() => {
     if (open) setMounted(true)
   }, [open])
+
+  // Escape closes the sheet — the backdrop was the only way out before, which
+  // leaves keyboard users stuck.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+
   if (!mounted || !open) return null
 
   return (
-    <div className="absolute inset-0 z-50 flex flex-col justify-end">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      className="absolute inset-0 z-50 flex flex-col justify-end"
+    >
       <button
         aria-label="Close"
         onClick={onClose}

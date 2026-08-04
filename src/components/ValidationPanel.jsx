@@ -18,7 +18,7 @@ export default function ValidationPanel({ screen, onJump, current }) {
         </div>
         <div className="leading-none">
           <div className="text-[15px] font-extrabold tracking-tight text-white">KacherPonno</div>
-          <div className="bn mt-1 text-[11.5px] text-jade-300">কাছের পণ্য · Sylhet</div>
+          <div className="bn mt-1 text-[11.5px] text-jade-300"><span lang="bn">কাছের পণ্য</span> · Sylhet</div>
         </div>
       </div>
 

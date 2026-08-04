@@ -45,7 +45,7 @@ export default function Welcome({ nav }) {
             </div>
             <div className="leading-none">
               <div className="font-display text-[18px] font-extrabold tracking-[-.02em]">KacherPonno</div>
-              <div className="bn mt-1 text-[12.5px] text-jade-200">কাছের পণ্য</div>
+              <div lang="bn" className="bn mt-1 text-[12.5px] text-jade-200">কাছের পণ্য</div>
             </div>
           </div>
 
@@ -101,7 +101,7 @@ export default function Welcome({ nav }) {
               >
                 <Icon name={CATEGORY_ICON[c]} size={18} strokeWidth={2} />
               </span>
-              <div className="bn mt-2 text-[11.5px] font-semibold text-ink-70">{CATEGORY_META[c].bn}</div>
+              <div lang="bn" className="bn mt-2 text-[11.5px] font-semibold text-ink-70">{CATEGORY_META[c].bn}</div>
             </div>
           ))}
         </div>

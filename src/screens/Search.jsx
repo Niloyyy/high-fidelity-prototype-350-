@@ -171,7 +171,7 @@ export default function Search({ nav }) {
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate text-[13.5px] font-bold leading-tight">{c}</span>
-                      <span className="bn block text-[11.5px] text-ink-50">{CATEGORY_META[c].bn}</span>
+                      <span lang="bn" className="bn block text-[11.5px] text-ink-50">{CATEGORY_META[c].bn}</span>
                     </span>
                   </button>
                 ))}
