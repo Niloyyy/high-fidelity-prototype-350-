@@ -126,7 +126,10 @@ function Prototype() {
       {/* ---------------- Device ----------------
           Height is clamped to the viewport so the frame can never be clipped
           on a smaller laptop screen — the bug that showed up in the pitch. */}
-      <div className="relative h-full w-full lg:h-[min(844px,calc(100dvh-3rem))] lg:w-[390px] lg:shrink-0">
+      {/* max-w keeps the full-bleed layout readable between phone and laptop:
+          without it, a tablet or half-width window stretches every card to
+          ~750px and strands the price away from the shop name. */}
+      <div className="relative mx-auto h-full w-full max-w-[440px] lg:h-[min(844px,calc(100dvh-3rem))] lg:w-[390px] lg:shrink-0">
         <div className="relative flex h-full w-full flex-col overflow-hidden bg-canvas lg:rounded-[42px] lg:border-[9px] lg:border-ink lg:shadow-frame">
           {/* Fake status bar, laptop only — sells the mobile context in a pitch */}
           <div className="band-deep hidden shrink-0 items-center justify-between px-6 pb-1 pt-2.5 text-[12px] font-semibold text-white lg:flex">
