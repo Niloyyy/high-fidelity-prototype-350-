@@ -98,8 +98,8 @@ const run = async () => {
   await clickText(page, 'Sylhet Mobile Gallery', '[role=button]')
   await shot(page, '06-shop-detail')
 
-  await clickText(page, 'Report wrong price')
-  await clickText(page, 'It was out of stock')
+  await clickText(page, 'Report incorrect info')
+  await clickText(page, 'Price at the shop is different')
   await shot(page, '07-report-sheet')
 
   console.log('Shop-owner flow:')

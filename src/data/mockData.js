@@ -434,7 +434,7 @@ export const VALIDATION = {
     source: 'Shopper — Compelling Offer Interview',
     question: 'What would make you stop using the app?',
     decision:
-      'The interview’s churn risk is a wasted trip. So the searched item’s price, quantity and freshness sit above the fold, and a one-tap “Report wrong price or stock” control lets a shopper correct the listing instead of silently leaving. Reported listings are visibly flagged for the next shopper.',
+      'The interview’s churn risk is a wasted trip. So the searched item’s price, quantity and freshness sit above the fold, and a one-tap “Report incorrect info” control lets a shopper correct the listing instead of silently leaving. It reports a mismatch between the listing and the shelf — never a complaint that a price is high, since shops set their own prices and retailers are the paying side of this market. Reported listings are visibly flagged for the next shopper.',
   },
   dashboard: {
     screen: 'Inventory Dashboard',

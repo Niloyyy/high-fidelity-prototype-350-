@@ -111,7 +111,11 @@ Everything needed to decide to travel, above the fold.
 The trust loop. A wasted trip is the churn risk, so a let-down shopper fixes the data instead of
 silently leaving.
 
-- Four one-tap reasons: out of stock, price differs, shop closed, shop gone.
+- Four one-tap reasons: out of stock, price at the shop differs, shop closed, shop gone.
+- **Scoped to accuracy, not pricing.** Shops set their own prices, so this never reports a price for
+  being high — only a listing that doesn't match the shelf. The sheet says so explicitly, because
+  retailers are the paying side of this market and the trust loop must not become a complaint channel
+  aimed at them.
 - The listing is then **flagged on both the shop detail and the results row**, so the next shopper
   sees the warning too.
 
@@ -182,7 +186,7 @@ Everything below is real state, not a mock-up of state:
 | "Notify me when available" (empty search) | Registers a real alert; the button flips to a confirmed state instead of leaving a dead end |
 | "Notify on price drop" (shop detail) | Same alert store; toggles on and off with visible state |
 | Any item under "Also at this shop" | Opens a full price comparison for that item across every nearby shop |
-| "Report wrong price or stock" | Writes a report to the store; the listing is then flagged on both the shop detail **and** the results row |
+| "Report incorrect info" | Writes a report to the store; the listing is then flagged on both the shop detail **and** the results row |
 | Stock toggle (owner) | One tap flips `inStock`, zeroes/restores quantity, **and resets the "last updated" stamp to "just now"** |
 | "Confirm all" | Bulk-refreshes every stale listing and the nudge disappears |
 | Add item | Writes to the shared catalogue — the new item becomes searchable in the shopper flow |
@@ -240,7 +244,7 @@ on a laptop, ⓘ button on a phone), so it is visible to a grader without readin
 | **Welcome** | *Shopper — Compelling Offer:* how do people react to "Google Search for your local shelves"? | The pitch is stated in the interview's own words and immediately quantified with local supply (128 shops · 2,400 items · 2 km), plus a live ticker of nearby searches. Two role doors, so neither audience reads copy meant for the other. |
 | **Search** | *Shopper — Solution:* what did you actually do last time — how many shops did you call or visit? | Search is **item-first**, not shop-first, because people start from the product and end up ringing shops one by one. Every suggestion already carries "in stock at N shops · from ৳X · 0.6 km", so the ring-around is answered before the user even commits to a query. |
 | **Results** | *Shopper — Compelling Offer:* what do you need to see before you'd tap "Get Directions"? | Price, stock and distance are the three largest elements in every row, each with a **"last updated Xm ago"** stamp and a colour-coded freshness dot (green &lt;1 h, amber &lt;12 h, grey = unconfirmed). Sponsored rows are pinned first but labelled, and tapping the label explains that paying never changes price, stock or distance. |
-| **Shop Detail** | *Shopper — Compelling Offer:* what would make you stop using the app? | The churn risk is a wasted trip, so the searched item's price / quantity / freshness sit above the fold in a three-column block, and **"Report wrong price or stock"** is one tap. A let-down shopper fixes the data instead of silently leaving; reported listings are flagged for the next shopper. |
+| **Shop Detail** | *Shopper — Compelling Offer:* what would make you stop using the app? | The churn risk is a wasted trip, so the searched item's price / quantity / freshness sit above the fold in a three-column block, and **"Report incorrect info"** is one tap. A let-down shopper fixes the data instead of silently leaving; reported listings are flagged for the next shopper. Deliberately scoped to listing-vs-shelf mismatches, never to a price being high — shops set their own prices, and retailers are the paying side of this market. |
 | **Inventory Dashboard** | *Retailer — Compelling Offer:* how many minutes a day would you really spend, and is ৳500/month worth it? | A stock change is **one tap on the row** — nothing opens, nothing saves. The banner never just says "Go Premium": it states the measured loss (*42 nearby searches this week for items you carry · 12 shoppers tapped directions to shops ranked above you · you rank #6*) and prices it at ≈৳17/day. A stale-listing nudge ties owner effort directly to shopper trust. |
 | **Add / Update Item** | *Retailer — Compelling Offer:* barcode, manual, or spreadsheet? | We refuse to assume. All three are equal, first-class paths, and the scanner and CSV import are simulated end to end — so in a real interview we can watch which one a shopkeeper reaches for first. **That observation is the finding; the UI is the instrument.** |
 
@@ -263,8 +267,8 @@ Two extra validation instruments are built into the product rather than bolted o
 1. **Welcome** → "I'm a Shopper".
 2. Type `charger` → tap **65W Type-C Fast Charger**. Point at the freshness stamps and the Sponsored
    label; tap the label to show the disclosure. Sort by **Price**, then flip to **map**.
-3. Open **Sylhet Mobile Gallery** → show the price/stock/distance block → tap **Report wrong price
-   or stock** → send. Show the listing now flagged.
+3. Open **Sylhet Mobile Gallery** → show the price/stock/distance block → tap **Report incorrect
+   info** → send. Show the listing now flagged.
 4. Back to Welcome → **"I'm a Shop Owner"**.
 5. Toggle the **65W Type-C Fast Charger** off. One tap, and the stamp reads *just now*.
 6. Show the quantified upsell, then the **locked demand chart** below it → **Unlock with Premium** →

@@ -9,13 +9,22 @@ import { useStore } from '../lib/store'
  * Validation question (Shopper — Compelling Offer): what would make you stop
  * using the app? The script's churn risk is a wasted trip on a wrong listing.
  * So: the searched item's price / quantity / freshness sit above the fold, and
- * "Report wrong price or stock" is one tap away — a shopper who is let down
- * gets to fix the data instead of silently leaving.
+ * "Report incorrect info" is one tap away — a shopper who is let down gets to
+ * fix the data instead of silently leaving.
+ *
+ * Note the framing: shops set their own prices, so this is never a complaint
+ * channel about a price being high. Every reason is a mismatch between the
+ * listing and the shelf, which is the only thing that costs a shopper a trip.
  */
 
+/**
+ * Every reason is a mismatch between the listing and reality — never a
+ * judgement about the shop's pricing. Shops set their own prices; this control
+ * only exists so a stale or mistyped listing can be corrected.
+ */
 const REASONS = [
   { id: 'oos', label: 'It was out of stock', icon: 'box' },
-  { id: 'price', label: 'Price is different', icon: 'sort' },
+  { id: 'price', label: 'Price at the shop is different', icon: 'sort' },
   { id: 'closed', label: 'Shop was closed', icon: 'clock' },
   { id: 'gone', label: 'Shop is not here anymore', icon: 'pin' },
 ]
@@ -146,7 +155,7 @@ export default function ShopDetail({ nav, params }) {
                     hover:border-clay-200 hover:bg-clay-50 hover:text-clay-600 focus-visible:ring-clay-200"
                 >
                   <Icon name="flag" size={14} />
-                  Report wrong price
+                  Report incorrect info
                 </button>
               </div>
 
@@ -263,7 +272,7 @@ export default function ShopDetail({ nav, params }) {
       <Sheet
         open={reportOpen}
         onClose={() => setReportOpen(false)}
-        title="Something wrong with this listing?"
+        title="Does this listing match the shop?"
         subtitle="Takes one tap. It helps the next shopper too."
         footer={
           <button onClick={submitReport} disabled={!reason} className="btn btn-lg btn-primary w-full">
@@ -271,6 +280,15 @@ export default function ShopDetail({ nav, params }) {
           </button>
         }
       >
+        {/* States the boundary up front: this is not a complaint channel. */}
+        <div className="mb-3 flex items-start gap-2 rounded-xl bg-jade-50 p-3 text-[12.5px] leading-snug text-jade-800">
+          <Icon name="info" size={15} className="mt-[1px] shrink-0" />
+          <span>
+            Shops set their own prices — this isn’t about a price being high. It only flags a listing
+            that <b>doesn’t match what’s actually in the shop</b>.
+          </span>
+        </div>
+
         <div className="space-y-2">
           {REASONS.map((r) => {
             const on = reason === r.id
