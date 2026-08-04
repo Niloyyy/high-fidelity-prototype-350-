@@ -117,7 +117,7 @@ export default function ItemEditor({ nav, params = {} }) {
         {/* ---- Three ways in. None is assumed to be the right one. ---- */}
         {!editingSku && (
           <section className="px-4 pt-4">
-            <h2 className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+            <h2 className="mb-2.5 eyebrow">
               Fastest way to add
             </h2>
             <div className="grid grid-cols-3 gap-2.5">
@@ -173,7 +173,7 @@ export default function ItemEditor({ nav, params = {} }) {
 
         {/* ---- The form ---- */}
         <section className="px-4 pt-5">
-          <h2 className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">Item details</h2>
+          <h2 className="mb-2.5 eyebrow">Item details</h2>
 
           <div className="card space-y-4 p-4">
             <div>

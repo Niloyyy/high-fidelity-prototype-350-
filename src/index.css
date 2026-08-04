@@ -18,7 +18,8 @@
   }
 
   body {
-    @apply bg-jade-900 font-sans text-ink antialiased;
+    @apply font-sans text-ink antialiased;
+    background-color: #0f241f;
     overscroll-behavior: none;
   }
 
@@ -45,6 +46,20 @@
     @apply rounded-2xl border border-line bg-surface shadow-card;
   }
 
+  /* A card that is itself the tap target. */
+  .card-tap {
+    @apply card cursor-pointer transition duration-200 ease-swift hover:border-jade-200 hover:shadow-soft
+      active:scale-[.99];
+  }
+
+  /* Header band. A gentle vertical gradient reads as depth without weight. */
+  .band {
+    background-image: linear-gradient(180deg, #2a6656 0%, #235d4e 55%, #1f5346 100%);
+  }
+  .band-deep {
+    background-image: linear-gradient(180deg, #235d4e 0%, #1c4a3e 100%);
+  }
+
   /* Corrugated shop-shutter texture, lifted from the roll-down shutters of
      Bandar Bazar. Used behind brand headers to root the product locally. */
   .shutter {
@@ -62,56 +77,105 @@
     background-size: 14px 14px;
   }
 
-  /* --- Buttons -------------------------------------------------------- */
+  /* --- Buttons --------------------------------------------------------
+     Every interactive element in the app routes through one of these, so
+     hit-area, hover, press, disabled and keyboard-focus behave identically
+     everywhere. Focus rings are focus-visible only: keyboard users get a
+     clear ring, mouse users never see a stray outline.                    */
   .btn {
     @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-4 text-[15px] font-semibold
-      transition duration-150 ease-swift active:scale-[.97] disabled:pointer-events-none disabled:opacity-40;
+      transition duration-150 ease-swift
+      focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-jade-300 focus-visible:ring-offset-2
+      focus-visible:ring-offset-surface
+      active:scale-[.97] disabled:pointer-events-none disabled:opacity-45 disabled:shadow-none;
   }
   .btn-lg {
-    @apply h-[52px] rounded-2xl text-base;
+    @apply h-[52px] rounded-2xl px-5 text-[16px];
   }
   .btn-md {
     @apply h-11;
   }
+  /* Still a 36px target with generous padding — comfortable, not cramped. */
   .btn-sm {
-    @apply h-9 px-3 text-[13px];
+    @apply h-9 gap-1.5 px-3.5 text-[13px];
   }
+
   .btn-primary {
-    @apply bg-jade-700 text-white shadow-[0_6px_16px_-8px_rgba(11,78,63,.9)] hover:bg-jade-800;
+    @apply bg-jade-700 text-white shadow-[0_8px_18px_-10px_rgba(37,93,78,.95)]
+      hover:bg-jade-800 active:bg-jade-800;
   }
   .btn-gold {
-    @apply bg-marigold-400 text-jade-900 shadow-[0_6px_16px_-8px_rgba(217,140,8,.9)] hover:bg-marigold-300;
+    @apply bg-marigold-300 text-[#4A3405] shadow-[0_8px_18px_-10px_rgba(201,141,30,.85)]
+      hover:bg-marigold-200 active:bg-marigold-400
+      focus-visible:ring-marigold-300;
   }
   .btn-ghost {
-    @apply border border-line bg-surface text-ink-70 hover:bg-canvas;
+    @apply border border-line bg-surface text-ink-70 hover:border-jade-200 hover:bg-jade-50 hover:text-jade-700;
   }
   .btn-quiet {
-    @apply bg-jade-50 text-jade-700 hover:bg-jade-100;
+    @apply bg-jade-50 text-jade-700 hover:bg-jade-100 active:bg-jade-200;
+  }
+  .btn-danger {
+    @apply bg-clay-500 text-white hover:bg-clay-600 focus-visible:ring-clay-200;
+  }
+  /* Text-only action; still 36px tall so it is comfortably tappable. */
+  .btn-link {
+    @apply inline-flex h-9 select-none items-center gap-1 rounded-lg px-2 text-[13px] font-semibold text-jade-600
+      transition duration-150 hover:bg-jade-50 hover:text-jade-700
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jade-300 active:scale-[.97];
+  }
+
+  /* Circular icon button — used in headers and for close affordances. */
+  .icon-btn {
+    @apply grid h-10 w-10 shrink-0 place-items-center rounded-full transition duration-150 ease-swift
+      focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-jade-300 active:scale-90;
+  }
+  .icon-btn-on-dark {
+    @apply icon-btn text-white/90 hover:bg-white/15 hover:text-white focus-visible:ring-white/50;
+  }
+  .icon-btn-on-light {
+    @apply icon-btn text-ink-50 hover:bg-canvas hover:text-ink;
   }
 
   /* --- Chips ---------------------------------------------------------- */
   .chip {
-    @apply inline-flex select-none items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5
-      text-[13px] font-medium transition duration-150 ease-swift active:scale-[.96];
+    @apply inline-flex min-h-[34px] select-none items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5
+      py-1.5 text-[13px] font-medium transition duration-150 ease-swift
+      focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-jade-300 focus-visible:ring-offset-1
+      active:scale-[.96];
   }
   .chip-off {
-    @apply border-line bg-surface text-ink-70;
+    @apply border-line bg-surface text-ink-70 hover:border-jade-200 hover:bg-jade-50 hover:text-jade-700;
   }
   .chip-on {
-    @apply border-jade-700 bg-jade-700 text-white;
+    @apply border-jade-600 bg-jade-600 text-white shadow-[0_4px_12px_-6px_rgba(48,115,98,.9)] hover:bg-jade-700;
+  }
+  .chip-on-dark {
+    @apply border-white/20 bg-white/10 text-white hover:bg-white/20 focus-visible:ring-white/50;
+  }
+  .chip-gold {
+    @apply border-marigold-300 bg-marigold-300 text-[#4A3405] hover:bg-marigold-200 focus-visible:ring-marigold-200;
   }
 
   .tag {
-    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10.5px] font-bold uppercase tracking-[.07em];
+    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-[3px] text-[10.5px] font-bold uppercase
+      tracking-[.06em];
   }
 
+  /* --- Inputs --------------------------------------------------------- */
   .field {
-    @apply h-12 w-full rounded-xl border border-line bg-surface px-3.5 text-[15px] text-ink outline-none
-      transition placeholder:text-ink-30 focus:border-jade-400 focus:ring-4 focus:ring-jade-100;
+    @apply h-12 w-full rounded-xl border border-line bg-canvas px-3.5 text-[15px] text-ink outline-none
+      transition duration-150 placeholder:text-ink-30
+      hover:border-jade-200 focus:border-jade-400 focus:bg-surface focus:ring-4 focus:ring-jade-100;
   }
 
   .label {
-    @apply mb-1.5 block text-[12.5px] font-semibold uppercase tracking-[.06em] text-ink-50;
+    @apply mb-1.5 block text-[11.5px] font-bold uppercase tracking-[.07em] text-ink-50;
+  }
+
+  /* Section heading used above every list on every screen. */
+  .eyebrow {
+    @apply text-[11.5px] font-bold uppercase tracking-[.08em] text-ink-30;
   }
 }
 

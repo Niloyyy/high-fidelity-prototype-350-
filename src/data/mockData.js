@@ -357,6 +357,32 @@ export const OWNER_STATS = {
   projectedVisits: 31,
 }
 
+/**
+ * Nearby searches per item, last 7 days — the "basic analytics" the ৳500 tier
+ * promises. Locked on the free plan, live the moment Premium is switched on,
+ * so the upsell is demonstrably a real feature and not a marketing line.
+ */
+export const ITEM_DEMAND = {
+  'charger-65w': 14,
+  'powerbank-10k': 9,
+  'cable-c': 7,
+  'glass-a15': 5,
+  'earphone-c': 4,
+  'hdmi-2m': 3,
+  'pendrive-32': 3,
+  'led-12w': 2,
+  'otg-c': 2,
+  'ext-board': 1,
+}
+
+/** Stable pseudo-demand for items the shop adds during the demo. */
+export const demandFor = (sku) => {
+  if (ITEM_DEMAND[sku] != null) return ITEM_DEMAND[sku]
+  let h = 0
+  for (let i = 0; i < sku.length; i++) h = (h * 31 + sku.charCodeAt(i)) % 97
+  return 1 + (h % 8)
+}
+
 /* --------------------------------------------------------------------- */
 /*  Barcode simulator — "scan" resolves to a real catalogue product.      */
 /*  Tests the retailer question: barcode vs manual vs spreadsheet.        */

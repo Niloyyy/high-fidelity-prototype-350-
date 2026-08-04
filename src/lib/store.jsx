@@ -20,6 +20,8 @@ export function StoreProvider({ children }) {
   const [premium, setPremium] = useState(false)
   /** key = `${shopId}:${sku}` — listings a shopper has flagged as wrong. */
   const [reports, setReports] = useState({})
+  /** Shopper alerts: price drops on a listing, or restock of an item. */
+  const [alerts, setAlerts] = useState({})
   const [toasts, setToasts] = useState([])
   /** sku that should flash in the dashboard after being added/edited. */
   const [highlight, setHighlight] = useState(null)
@@ -92,6 +94,32 @@ export function StoreProvider({ children }) {
   )
 
   const reportFor = useCallback((shopId, sku) => reports[`${shopId}:${sku}`], [reports])
+
+  /**
+   * Alerts are the "I'm interested but not now" escape hatch. Without one, a
+   * shopper who finds nothing in stock simply leaves and never returns — the
+   * churn risk the shopper interview is built around.
+   */
+  const toggleAlert = useCallback(
+    (key, label) => {
+      const added = !alerts[key]
+      setAlerts((a) => {
+        const next = { ...a }
+        if (added) next[key] = { label, at: Date.now() }
+        else delete next[key]
+        return next
+      })
+      toast(added ? `We’ll alert you — ${label}` : 'Alert removed', {
+        tone: added ? 'good' : 'default',
+        icon: added ? 'bell' : 'x',
+      })
+      return added
+    },
+    [alerts, toast],
+  )
+
+  const hasAlert = useCallback((key) => Boolean(alerts[key]), [alerts])
+  const alertCount = Object.keys(alerts).length
 
   /* ---------------- Owner: inventory ---------------- */
 
@@ -229,6 +257,9 @@ export function StoreProvider({ children }) {
       clearRecent,
       reportListing,
       reportFor,
+      toggleAlert,
+      hasAlert,
+      alertCount,
       toggleStock,
       confirmAllFresh,
       saveItem,
@@ -254,6 +285,9 @@ export function StoreProvider({ children }) {
       clearRecent,
       reportListing,
       reportFor,
+      toggleAlert,
+      hasAlert,
+      alertCount,
       toggleStock,
       confirmAllFresh,
       saveItem,

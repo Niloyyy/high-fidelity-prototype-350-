@@ -15,7 +15,7 @@ import { useStore } from '../lib/store'
  */
 
 export default function Search({ nav }) {
-  const { searchProducts, listingsFor, recent, pushRecent, clearRecent } = useStore()
+  const { searchProducts, listingsFor, recent, pushRecent, clearRecent, toggleAlert, hasAlert } = useStore()
   const [q, setQ] = useState('')
   const [cat, setCat] = useState(null)
   const inputRef = useRef(null)
@@ -51,7 +51,7 @@ export default function Search({ nav }) {
         right={
           <button
             onClick={() => nav.reset('welcome')}
-            className="chip border-white/25 bg-white/10 text-white"
+            className="chip chip-on-dark"
             title="Switch role"
           >
             <Icon name="user" size={13} />
@@ -61,7 +61,7 @@ export default function Search({ nav }) {
       >
         {/* Search field */}
         <div className="px-3 pb-3.5">
-          <div className="flex items-center gap-2 rounded-2xl bg-white px-3.5 shadow-lift">
+          <div className="flex items-center gap-2 rounded-2xl bg-white px-3.5 shadow-lift ring-1 ring-black/5 transition focus-within:ring-2 focus-within:ring-marigold-300">
             <Icon name="search" size={19} className="text-jade-500" />
             <input
               ref={inputRef}
@@ -69,7 +69,8 @@ export default function Search({ nav }) {
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && runFreeText()}
               placeholder="Napa Extra, charger, wrench…"
-              className="h-[46px] w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-30"
+              aria-label="Search for an item"
+              className="h-[48px] w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-30"
               autoComplete="off"
             />
             {q && (
@@ -78,10 +79,12 @@ export default function Search({ nav }) {
                   setQ('')
                   inputRef.current?.focus()
                 }}
-                aria-label="Clear"
-                className="grid h-6 w-6 place-items-center rounded-full bg-canvas text-ink-50"
+                aria-label="Clear search"
+                className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-canvas text-ink-50 transition
+                  hover:bg-line hover:text-ink focus-visible:outline-none focus-visible:ring-2
+                  focus-visible:ring-jade-400 active:scale-90"
               >
-                <Icon name="x" size={13} strokeWidth={2.4} />
+                <Icon name="x" size={14} strokeWidth={2.4} />
               </button>
             )}
           </div>
@@ -95,11 +98,8 @@ export default function Search({ nav }) {
               <button
                 key={c}
                 onClick={() => setCat(on ? null : c)}
-                className={`chip ${
-                  on
-                    ? 'border-marigold-400 bg-marigold-400 text-jade-900'
-                    : 'border-white/25 bg-white/10 text-white'
-                }`}
+                aria-pressed={on}
+                className={`chip ${on ? 'chip-gold' : 'chip-on-dark'}`}
               >
                 <Icon name={CATEGORY_ICON[c]} size={14} />
                 {c}
@@ -115,10 +115,10 @@ export default function Search({ nav }) {
             {recent.length > 0 && (
               <section className="mb-7">
                 <div className="mb-2.5 flex items-center justify-between">
-                  <h2 className="text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+                  <h2 className="eyebrow">
                     Recent searches
                   </h2>
-                  <button onClick={clearRecent} className="text-[12px] font-semibold text-jade-600">
+                  <button onClick={clearRecent} className="btn-link -mr-2">
                     Clear
                   </button>
                 </div>
@@ -127,7 +127,9 @@ export default function Search({ nav }) {
                     <button
                       key={r}
                       onClick={() => setQ(r)}
-                      className="flex w-full items-center gap-3 px-4 py-3 text-left transition active:bg-canvas"
+                      className="flex w-full items-center gap-3 px-4 py-3 text-left transition duration-150
+                        hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
+                        focus-visible:ring-jade-300 active:bg-jade-100"
                     >
                       <Icon name="clock" size={16} className="text-ink-30" />
                       <span className="min-w-0 flex-1 truncate text-[14.5px]">{r}</span>
@@ -139,7 +141,7 @@ export default function Search({ nav }) {
             )}
 
             <section className="mb-7">
-              <h2 className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+              <h2 className="mb-2.5 eyebrow">
                 Trending around you
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -152,7 +154,7 @@ export default function Search({ nav }) {
             </section>
 
             <section>
-              <h2 className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+              <h2 className="mb-2.5 eyebrow">
                 Browse by category
               </h2>
               <div className="grid grid-cols-2 gap-2.5">
@@ -160,7 +162,8 @@ export default function Search({ nav }) {
                   <button
                     key={c}
                     onClick={() => setCat(c)}
-                    className="card flex items-center gap-3 p-3.5 text-left transition duration-200 ease-swift hover:border-jade-300 active:scale-[.98]"
+                    className="card-tap flex items-center gap-3 p-3.5 text-left focus-visible:outline-none
+                      focus-visible:ring-[3px] focus-visible:ring-jade-300"
                   >
                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-jade-50 text-jade-600">
                       <Icon name={CATEGORY_ICON[c]} size={19} />
@@ -177,11 +180,25 @@ export default function Search({ nav }) {
         ) : results.length === 0 ? (
           <EmptyState
             title="Nothing on nearby shelves yet"
-            body={`No shop within 2 km has listed “${q}”. We’ll notify you if one adds it.`}
+            body={`No shop within 2 km has listed “${q.trim()}”. We can watch for it instead.`}
             action={
-              <button className="btn btn-md btn-quiet mt-5">
-                <Icon name="bell" size={16} />
-                Notify me when available
+              // A dead end is where shoppers churn, so the empty state does
+              // something real: it registers an alert you can see turn on.
+              <button
+                onClick={() => toggleAlert(`want:${q.trim().toLowerCase()}`, `“${q.trim()}” near you`)}
+                aria-pressed={hasAlert(`want:${q.trim().toLowerCase()}`)}
+                className={`btn btn-md mt-5 ${
+                  hasAlert(`want:${q.trim().toLowerCase()}`) ? 'btn-primary' : 'btn-quiet'
+                }`}
+              >
+                <Icon
+                  name={hasAlert(`want:${q.trim().toLowerCase()}`) ? 'check' : 'bell'}
+                  size={16}
+                  strokeWidth={2.2}
+                />
+                {hasAlert(`want:${q.trim().toLowerCase()}`)
+                  ? 'We’ll tell you when a shop adds it'
+                  : 'Notify me when available'}
               </button>
             }
           />
@@ -199,9 +216,11 @@ export default function Search({ nav }) {
                     key={p.sku}
                     onClick={() => open(p)}
                     style={{ animationDelay: `${Math.min(idx, 8) * 22}ms` }}
-                    className="anim-rise flex w-full items-center gap-3 px-4 py-3 text-left transition active:bg-canvas"
+                    className="anim-rise flex w-full items-center gap-3 px-4 py-3 text-left transition duration-150
+                      hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
+                      focus-visible:ring-jade-300 active:bg-jade-100"
                   >
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-canvas text-jade-600">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-jade-50 text-jade-600">
                       <Icon name={CATEGORY_ICON[p.category]} size={18} />
                     </span>
                     <span className="min-w-0 flex-1">

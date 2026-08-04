@@ -23,12 +23,14 @@ export default function Results({ nav, params }) {
   const [sort, setSort] = useState('match')
   const [view, setView] = useState('list')
   const [inStockOnly, setInStockOnly] = useState(false)
+  const [radius, setRadius] = useState(0) // 0 = no limit
   const [selected, setSelected] = useState(null)
   const [showSponsoredInfo, setShowSponsoredInfo] = useState(false)
 
   const rows = useMemo(() => {
     let r = listingsFor(sku)
     if (inStockOnly) r = r.filter((x) => x.listing.inStock)
+    if (radius) r = r.filter((x) => x.shop.distanceKm <= radius)
 
     const cmp = {
       price: (a, b) => a.listing.price - b.listing.price,
@@ -44,7 +46,9 @@ export default function Results({ nav, params }) {
     const sponsored = r.filter((x) => x.shop.sponsored).sort(cmp)
     const organic = r.filter((x) => !x.shop.sponsored).sort(cmp)
     return [...sponsored, ...organic]
-  }, [listingsFor, sku, sort, inStockOnly])
+  }, [listingsFor, sku, sort, inStockOnly, radius])
+
+  const totalNearby = listingsFor(sku).length
 
   const liveRows = rows.filter((r) => r.listing.inStock)
   const cheapest = liveRows.length ? Math.min(...liveRows.map((r) => r.listing.price)) : null
@@ -79,7 +83,9 @@ export default function Results({ nav, params }) {
           />
           <button
             onClick={() => setView(view === 'list' ? 'map' : 'list')}
-            className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-xl bg-white/10 text-white transition active:scale-95"
+            className="grid h-[40px] w-[40px] shrink-0 place-items-center rounded-xl bg-white/10 text-white
+              transition duration-150 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-[3px]
+              focus-visible:ring-white/50 active:scale-95"
             aria-label={view === 'list' ? 'Show map' : 'Show list'}
           >
             <Icon name={view === 'list' ? 'map' : 'list'} size={18} />
@@ -87,19 +93,38 @@ export default function Results({ nav, params }) {
         </div>
       </TopBar>
 
-      {/* Filter strip */}
-      <div className="flex shrink-0 items-center gap-2 border-b border-line bg-surface px-4 py-2.5">
-        <button
-          onClick={() => setInStockOnly((v) => !v)}
-          className={`chip ${inStockOnly ? 'chip-on' : 'chip-off'}`}
-        >
-          <Icon name="check" size={13} strokeWidth={2.5} />
-          In stock only
-        </button>
-        <span className="ml-auto flex items-center gap-1 text-[11.5px] font-medium text-ink-30">
+      {/* Filter strip — both filters actually narrow the result set */}
+      <div className="shrink-0 border-b border-line bg-surface">
+        <div className="flex items-center gap-2 overflow-x-auto px-4 py-2.5">
+          <button
+            onClick={() => setInStockOnly((v) => !v)}
+            aria-pressed={inStockOnly}
+            className={`chip ${inStockOnly ? 'chip-on' : 'chip-off'}`}
+          >
+            <Icon name="check" size={13} strokeWidth={2.5} />
+            In stock only
+          </button>
+          <span className="h-5 w-px shrink-0 bg-line" />
+          {[
+            { v: 1, l: 'Within 1 km' },
+            { v: 2, l: 'Within 2 km' },
+            { v: 0, l: 'Any distance' },
+          ].map((r) => (
+            <button
+              key={r.l}
+              onClick={() => setRadius(r.v)}
+              aria-pressed={radius === r.v}
+              className={`chip ${radius === r.v ? 'chip-on' : 'chip-off'}`}
+            >
+              {r.l}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-1.5 px-4 pb-2 text-[11.5px] font-medium text-ink-30">
           <Icon name="refresh" size={13} />
-          Stock confirmed by shops
-        </span>
+          Showing <span className="tnum font-bold text-ink-50">{rows.length}</span> of {totalNearby} shops
+          that list this · stock confirmed by the shops themselves
+        </div>
       </div>
 
       {view === 'map' ? (
@@ -144,8 +169,20 @@ export default function Results({ nav, params }) {
           {rows.length === 0 ? (
             <EmptyState
               icon="box"
-              title="No shop nearby has it in stock"
-              body="Turn off the “in stock only” filter to see shops that carry it but are currently out."
+              title="Nothing matches these filters"
+              body="Widen the distance or turn off “in stock only” to see shops that carry it but are currently out."
+              action={
+                <button
+                  onClick={() => {
+                    setInStockOnly(false)
+                    setRadius(0)
+                  }}
+                  className="btn btn-md btn-quiet mt-5"
+                >
+                  <Icon name="refresh" size={16} />
+                  Clear filters
+                </button>
+              }
             />
           ) : (
             <ul className="space-y-2.5">
@@ -170,7 +207,7 @@ export default function Results({ nav, params }) {
                         ${shop.sponsored ? 'border-marigold-200' : 'border-line'}`}
                     >
                       {shop.sponsored && (
-                        <span className="absolute inset-y-0 left-0 w-[3px] bg-marigold-400" />
+                        <span className="absolute inset-y-0 left-0 w-[3px] bg-marigold-300" />
                       )}
 
                       <div className="flex items-start gap-3">

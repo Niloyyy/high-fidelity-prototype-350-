@@ -17,12 +17,19 @@ export function timeAgo(ts, now = Date.now()) {
 /**
  * Freshness tiers drive the colour of the dot next to every stock listing.
  * This is the single most important trust signal in the shopper flow.
+ *
+ * Note the palette choice: fresh is jade, ageing is plain neutral, and only
+ * genuinely unconfirmed data goes clay. Marigold is deliberately absent — it
+ * means "sponsored" everywhere else in the app, and trust must never be
+ * confusable with paid placement.
  */
 export function freshness(ts, now = Date.now()) {
   const mins = (now - ts) / 60000
-  if (mins < 60) return { tier: 'live', label: 'Live', dot: 'bg-jade-500', text: 'text-jade-600' }
-  if (mins < 12 * 60) return { tier: 'recent', label: 'Recent', dot: 'bg-marigold-400', text: 'text-marigold-600' }
-  return { tier: 'stale', label: 'Unconfirmed', dot: 'bg-ink-30', text: 'text-ink-50' }
+  if (mins < 60)
+    return { tier: 'live', label: 'Just confirmed', dot: 'bg-jade-500', text: 'text-jade-700', bg: 'bg-jade-50' }
+  if (mins < 12 * 60)
+    return { tier: 'recent', label: 'Recent', dot: 'bg-ink-30', text: 'text-ink-50', bg: 'bg-canvas' }
+  return { tier: 'stale', label: 'Unconfirmed', dot: 'bg-clay-400', text: 'text-clay-600', bg: 'bg-clay-50' }
 }
 
 export const km = (d) => `${d.toFixed(1)} km`

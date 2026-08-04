@@ -40,13 +40,18 @@ Everything below is real state, not a mock-up of state:
 | Typing in search | Filters the live product catalogue; each suggestion computes shops-in-stock, lowest price and nearest distance on the fly |
 | Category chips | Filter the same catalogue; combine with the text query |
 | Sort (price / distance / best match) | Re-sorts the real result set; sponsored stays pinned and labelled |
+| Distance filter (1 km / 2 km / any) | Actually drops shops from the list, and the counter above reports "showing N of M" |
 | List ⇄ map toggle | Same data, re-projected onto a mini-map; price pins are tappable |
+| "Notify me when available" (empty search) | Registers a real alert; the button flips to a confirmed state instead of leaving a dead end |
+| "Notify on price drop" (shop detail) | Same alert store; toggles on and off with visible state |
+| Any item under "Also at this shop" | Opens a full price comparison for that item across every nearby shop |
 | "Report wrong price or stock" | Writes a report to the store; the listing is then flagged on both the shop detail **and** the results row |
 | Stock toggle (owner) | One tap flips `inStock`, zeroes/restores quantity, **and resets the "last updated" stamp to "just now"** |
 | "Confirm all" | Bulk-refreshes every stale listing and the nudge disappears |
 | Add item | Writes to the shared catalogue — the new item becomes searchable in the shopper flow |
 | Scan barcode | Simulated scanner resolves a barcode and auto-fills name, category and suggested price |
 | Import spreadsheet | Simulated CSV parse → preview → bulk add/update of several rows |
+| Demand analytics (owner) | Real per-item search counts, blurred behind a lock on the free plan and live the instant Premium is switched on — so the upsell is a demonstrable feature, not a marketing line |
 | Start Premium | The owner's shop becomes `sponsored: true` — go back to the shopper flow and it is now ranked first with a Sponsored label |
 
 **The two flows share one store.** Toggle the 65W charger out of stock as the shop owner, switch to
@@ -55,11 +60,23 @@ best thing to show a grader in the live demo.
 
 ### 2. It is visually specific, not a default theme
 
-- **Jade** (`#0B4E3F`–`#17836A`) — Sylhet tea-garden green. Primary actions, in-stock, brand. It is
+Three hues, each with exactly one job, all deliberately low-chroma — this is an app people open in a
+hurry, often outdoors, so it has to stay calm and legible rather than shout.
+
+- **Jade** (`#255D4E`–`#428D77`) — Sylhet tea-garden green. Primary actions, in stock, brand. It is
   the trust colour, so it is never used for anything commercial.
-- **Marigold** (`#EDA71F`) — rickshaw art and shop signage. Used *only* for Sponsored and Premium,
-  so paid placement is always visually separable from organic results.
-- **Clay** (`#C4432B`) — brick terracotta. Out of stock, wrong listings, lost customers.
+- **Marigold** (`#F2C86B`–`#C98D1E`) — rickshaw art and shop signage. Used *only* for Sponsored and
+  Premium, so paid placement is always visually separable from organic results. Notably, the
+  freshness indicator does **not** use it: fresh is jade, ageing is plain neutral, unconfirmed is
+  clay. Trust must never be confusable with paid placement.
+- **Clay** (`#BC5941`) — brick terracotta. Out of stock, wrong listings, lost customers. A warning,
+  not a siren.
+- **Neutrals** — `canvas #F5F8F6`, `surface #FFFFFF`, `line #E6EDE9`, ink from `#14241F` down to
+  `#B8C3BF`, all carrying a faint green cast so nothing looks grey next to the jade.
+
+Every interactive element routes through one button/chip/field class, so hit area (≥36 px), hover,
+press, disabled and keyboard focus behave identically everywhere. Focus rings are `focus-visible`
+only — keyboard users get a clear ring, mouse users never see a stray outline.
 - **Type** — Inter for UI with `tabular-nums` on every price, quantity and distance so shoppers can
   compare down a column; Hind Siliguri for the Bangla wordmark and category labels.
 - **Texture** — headers carry a faint corrugated *shutter* pattern, lifted from the roll-down
@@ -104,8 +121,9 @@ Two extra validation instruments are built into the product rather than bolted o
    or stock** → send. Show the listing now flagged.
 4. Back to Welcome → **"I'm a Shop Owner"**.
 5. Toggle the **65W Type-C Fast Charger** off. One tap, and the stamp reads *just now*.
-6. Show the quantified upsell → **See what ৳500/month changes** → the before/after ranking → start
-   Premium.
+6. Show the quantified upsell, then the **locked demand chart** below it → **Unlock with Premium** →
+   the before/after ranking → start Premium. The chart unlocks live, and red bars show items shoppers
+   wanted while the shop was out of stock.
 7. **Add item** → **Scan barcode** → watch the form auto-fill → save → it appears in the list.
 8. Switch back to the shopper flow, search the charger again: the shop is now **Sponsored**, and
    reads **Out of stock** because of step 5. Close on that — it proves the two flows are one system.

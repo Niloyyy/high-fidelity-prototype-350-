@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import Icon, { CATEGORY_ICON } from '../components/Icon'
 import { EmptyState, FreshnessPill, Segmented, Sheet, StatTile, Toggle, TopBar } from '../components/ui'
-import { OWNER_STATS } from '../data/mockData'
+import { OWNER_STATS, demandFor } from '../data/mockData'
 import { taka } from '../lib/format'
 import { useStore } from '../lib/store'
 
@@ -38,6 +38,17 @@ export default function Dashboard({ nav }) {
       })
   }, [ownerShop.stock, productBySku, q, filter])
 
+  /** Top-searched items in the shop — the payload of the Premium tier. */
+  const demand = useMemo(() => {
+    return ownerShop.stock
+      .map((it) => ({ sku: it.sku, name: productBySku(it.sku)?.name, n: demandFor(it.sku), inStock: it.inStock }))
+      .filter((d) => d.name)
+      .sort((a, b) => b.n - a.n)
+      .slice(0, 4)
+  }, [ownerShop.stock, productBySku])
+
+  const demandMax = demand.length ? demand[0].n : 1
+
   const counts = useMemo(() => {
     const inStock = ownerShop.stock.filter((s) => s.inStock).length
     const stale = ownerShop.stock.filter((s) => Date.now() - s.updatedAt > WEEK).length
@@ -66,7 +77,9 @@ export default function Dashboard({ nav }) {
         subtitle={`${ownerShop.area} · ${counts.inStock} of ${counts.total} items in stock`}
         right={
           <span
-            className={`tag ${premium ? 'bg-marigold-400 text-jade-900' : 'border border-white/25 text-white'}`}
+            className={`tag ${
+              premium ? 'bg-marigold-300 text-[#4A3405]' : 'border border-white/25 text-white/90'
+            }`}
           >
             {premium ? 'Premium' : 'Free plan'}
           </span>
@@ -116,7 +129,7 @@ export default function Dashboard({ nav }) {
             </div>
           ) : (
             <div className="anim-rise relative overflow-hidden rounded-2xl border border-marigold-200 bg-surface shadow-card">
-              <div className="absolute inset-y-0 left-0 w-[3px] bg-marigold-400" />
+              <div className="absolute inset-y-0 left-0 w-[3px] bg-marigold-300" />
               <div className="p-4">
                 <div className="flex items-start gap-2">
                   <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-marigold-100 text-marigold-600">
@@ -150,6 +163,65 @@ export default function Dashboard({ nav }) {
           )}
         </section>
 
+        {/* ---- Demand analytics. Locked free, live on Premium. ---- */}
+        <section className="px-4 pt-3">
+          <div className="card overflow-hidden">
+            <div className="flex items-center gap-2 border-b border-line px-4 py-3">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-jade-50 text-jade-600">
+                <Icon name="eye" size={16} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-[14px] font-bold leading-tight">What shoppers searched near you</h2>
+                <p className="mt-0.5 text-[11.5px] text-ink-50">Last 7 days · within 2 km</p>
+              </div>
+              {!premium && (
+                <span className="tag bg-marigold-100 text-marigold-700">
+                  <Icon name="sparkle" size={10} strokeWidth={2.5} />
+                  Premium
+                </span>
+              )}
+            </div>
+
+            <div className="relative px-4 py-3.5">
+              <ul className={`space-y-2.5 ${premium ? '' : 'pointer-events-none select-none blur-[5px]'}`}>
+                {demand.map((d) => (
+                  <li key={d.sku} className="flex items-center gap-3">
+                    <span className="w-[38%] shrink-0 truncate text-[12.5px] font-semibold">{d.name}</span>
+                    <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-canvas">
+                      <span
+                        className={`block h-full rounded-full transition-[width] duration-500 ease-swift ${
+                          d.inStock ? 'bg-jade-400' : 'bg-clay-300'
+                        }`}
+                        style={{ width: `${Math.round((d.n / demandMax) * 100)}%` }}
+                      />
+                    </span>
+                    <span className="tnum w-12 shrink-0 text-right text-[12.5px] font-bold text-ink-70">
+                      {d.n}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {!premium && (
+                <div className="absolute inset-0 grid place-items-center bg-surface/55">
+                  <button onClick={() => setPremiumOpen(true)} className="btn btn-sm btn-gold shadow-lift">
+                    <Icon name="sparkle" size={14} strokeWidth={2.4} />
+                    Unlock with Premium
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {premium && (
+              <p className="border-t border-line px-4 py-2.5 text-[11.5px] leading-snug text-ink-50">
+                Red bars are items shoppers wanted while you were{' '}
+                <span className="font-semibold text-clay-600">out of stock</span> — the fastest money you
+                can win back.
+              </p>
+            )}
+          </div>
+        </section>
+
         {/* ---- Stale-listing nudge: ties owner effort to shopper trust ---- */}
         {counts.stale > 0 && (
           <section className="anim-rise px-4 pt-3">
@@ -157,6 +229,7 @@ export default function Dashboard({ nav }) {
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-clay-50 text-clay-500">
                 <Icon name="alert" size={18} />
               </span>
+
               <p className="min-w-0 flex-1 text-[12.5px] leading-snug text-ink-70">
                 <b className="tnum">{counts.stale} items</b> haven’t been confirmed in over a week. Shoppers
                 see these as <span className="font-semibold text-ink-50">Unconfirmed</span>.
@@ -171,7 +244,7 @@ export default function Dashboard({ nav }) {
         {/* ---- Inventory controls ---- */}
         <section className="px-4 pt-5">
           <div className="mb-2.5 flex items-center justify-between">
-            <h2 className="text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">Your inventory</h2>
+            <h2 className="eyebrow">Your inventory</h2>
             <button
               onClick={() => nav.push('additem')}
               className="btn btn-sm btn-primary"
@@ -220,7 +293,10 @@ export default function Dashboard({ nav }) {
                 >
                   <button
                     onClick={() => nav.push('additem', { sku: it.sku })}
-                    className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                    aria-label={`Edit ${p.name}`}
+                    className="-my-1 flex min-w-0 flex-1 items-center gap-3 rounded-xl py-1 text-left transition
+                      duration-150 hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2
+                      focus-visible:ring-jade-300"
                   >
                     <span
                       className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-colors ${
@@ -309,7 +385,7 @@ export default function Dashboard({ nav }) {
             <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-marigold-600">
               With Premium
             </div>
-            <div className="mb-1 flex items-center gap-1.5 rounded-lg bg-marigold-400 px-1.5 py-1 text-[11.5px] font-bold text-jade-900">
+            <div className="mb-1 flex items-center gap-1.5 rounded-lg bg-marigold-300 px-1.5 py-1 text-[11.5px] font-bold text-[#4A3405]">
               <span className="tnum w-3">1</span>
               <span className="truncate">You</span>
               <Icon name="sparkle" size={11} strokeWidth={2.5} />

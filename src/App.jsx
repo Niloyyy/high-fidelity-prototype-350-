@@ -114,12 +114,22 @@ function Prototype() {
   const v = VALIDATION[current.screen] || VALIDATION.welcome
 
   return (
-    <div className="flex h-full w-full items-center justify-center gap-10 overflow-hidden bg-jade-900 xl:gap-16">
-      {/* ---------------- Device ---------------- */}
-      <div className="relative h-full w-full lg:h-[844px] lg:w-[390px] lg:shrink-0">
+    <div
+      className="flex h-full w-full items-center justify-center gap-8 overflow-hidden lg:p-6 xl:gap-14"
+      style={{
+        // Soft, low-chroma backdrop: deep enough to make the device read as a
+        // device, calm enough to sit behind for a 3-minute pitch.
+        backgroundImage:
+          'radial-gradient(120% 90% at 15% 0%, #1C483D 0%, #143029 45%, #0F241F 100%)',
+      }}
+    >
+      {/* ---------------- Device ----------------
+          Height is clamped to the viewport so the frame can never be clipped
+          on a smaller laptop screen — the bug that showed up in the pitch. */}
+      <div className="relative h-full w-full lg:h-[min(844px,calc(100dvh-3rem))] lg:w-[390px] lg:shrink-0">
         <div className="relative flex h-full w-full flex-col overflow-hidden bg-canvas lg:rounded-[42px] lg:border-[9px] lg:border-ink lg:shadow-frame">
           {/* Fake status bar, laptop only — sells the mobile context in a pitch */}
-          <div className="hidden shrink-0 items-center justify-between bg-jade-800 px-6 pb-1 pt-2.5 text-[12px] font-semibold text-white lg:flex">
+          <div className="band-deep hidden shrink-0 items-center justify-between px-6 pb-1 pt-2.5 text-[12px] font-semibold text-white lg:flex">
             <span className="tnum">9:41</span>
             <span className="flex items-center gap-1.5">
               <span className="flex items-end gap-[2px]">
@@ -187,7 +197,7 @@ function Prototype() {
       </div>
 
       {/* ---------------- Pitch panel (laptop) ---------------- */}
-      <aside className="hidden h-[844px] w-[360px] shrink-0 py-2 lg:block xl:w-[400px]">
+      <aside className="hidden h-[min(844px,calc(100dvh-3rem))] w-[360px] shrink-0 overflow-y-auto lg:block xl:w-[400px]">
         <ValidationPanel screen={current.screen} current={current.screen} onJump={jump} />
       </aside>
     </div>

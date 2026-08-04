@@ -37,7 +37,7 @@ export default function Welcome({ nav }) {
 
         <div className="relative">
           <div className="mb-7 flex items-center gap-2.5">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-marigold-400 text-jade-900">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-marigold-300 text-[#4A3405]">
               <Icon name="store" size={19} strokeWidth={2} />
             </div>
             <div className="leading-none">
@@ -88,7 +88,7 @@ export default function Welcome({ nav }) {
 
       {/* Categories strip */}
       <div className="px-5 pt-6">
-        <p className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+        <p className="mb-2.5 eyebrow">
           Covering
         </p>
         <div className="grid grid-cols-4 gap-2">
@@ -103,11 +103,14 @@ export default function Welcome({ nav }) {
 
       {/* Role doors */}
       <div className="mt-7 flex-1 px-5 pb-6">
-        <p className="mb-2.5 text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">Continue as</p>
+        <p className="mb-2.5 eyebrow">Continue as</p>
 
         <button
           onClick={() => nav.push('search')}
-          className="group mb-3 flex w-full items-center gap-3.5 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition duration-200 ease-swift hover:border-jade-300 hover:shadow-lift active:scale-[.985]"
+          className="group mb-3 flex w-full items-center gap-3.5 rounded-2xl border border-line bg-surface p-4 text-left
+            shadow-card transition duration-200 ease-swift hover:border-jade-300 hover:shadow-lift
+            focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-jade-300 focus-visible:ring-offset-2
+            active:scale-[.985]"
         >
           <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-jade-700 text-white">
             <Icon name="search" size={22} strokeWidth={2} />
@@ -123,9 +126,12 @@ export default function Welcome({ nav }) {
 
         <button
           onClick={() => nav.push('dashboard')}
-          className="group flex w-full items-center gap-3.5 rounded-2xl border border-line bg-surface p-4 text-left shadow-card transition duration-200 ease-swift hover:border-marigold-300 hover:shadow-lift active:scale-[.985]"
+          className="group flex w-full items-center gap-3.5 rounded-2xl border border-line bg-surface p-4 text-left
+            shadow-card transition duration-200 ease-swift hover:border-marigold-300 hover:shadow-lift
+            focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-marigold-300
+            focus-visible:ring-offset-2 active:scale-[.985]"
         >
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-marigold-400 text-jade-900">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-marigold-300 text-[#4A3405]">
             <Icon name="store" size={22} strokeWidth={2} />
           </div>
           <div className="min-w-0 flex-1">

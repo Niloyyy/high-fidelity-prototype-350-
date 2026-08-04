@@ -22,7 +22,7 @@ const REASONS = [
 
 export default function ShopDetail({ nav, params }) {
   const { shopId, sku } = params
-  const { shops, productBySku, reportListing, reportFor } = useStore()
+  const { shops, productBySku, reportListing, reportFor, toggleAlert, hasAlert } = useStore()
 
   const shop = shops.find((s) => s.id === shopId)
   const listing = shop?.stock.find((s) => s.sku === sku)
@@ -41,6 +41,8 @@ export default function ShopDetail({ nav, params }) {
 
   if (!shop || !listing) return null
   const reported = reportFor(shop.id, sku)
+  const alertKey = `price:${shop.id}:${sku}`
+  const watching = hasAlert(alertKey)
 
   const submitReport = () => {
     reportListing(shop.id, sku, reason)
@@ -57,7 +59,7 @@ export default function ShopDetail({ nav, params }) {
         <section className="shutter bg-jade-700 px-4 pb-5 text-white">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12.5px] text-jade-100">
             {shop.sponsored && (
-              <span className="tag bg-marigold-400 text-jade-900">
+              <span className="tag bg-marigold-300 text-[#4A3405]">
                 <Icon name="sparkle" size={11} strokeWidth={2.4} />
                 Sponsored
               </span>
@@ -159,14 +161,26 @@ export default function ShopDetail({ nav, params }) {
           <div className="card flex divide-x divide-line overflow-hidden">
             <a
               href={`tel:${shop.phone.replace(/[^0-9]/g, '')}`}
-              className="flex flex-1 items-center justify-center gap-2 py-3 text-[13.5px] font-semibold text-jade-700 transition active:bg-canvas"
+              className="flex flex-1 items-center justify-center gap-2 py-3.5 text-[13.5px] font-semibold text-jade-700
+                transition duration-150 hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2
+                focus-visible:ring-inset focus-visible:ring-jade-300 active:bg-jade-100"
             >
               <Icon name="phone" size={16} />
               Call shop
             </a>
-            <button className="flex flex-1 items-center justify-center gap-2 py-3 text-[13.5px] font-semibold text-jade-700 transition active:bg-canvas">
-              <Icon name="bell" size={16} />
-              Notify on price drop
+            <button
+              onClick={() => toggleAlert(alertKey, `${product?.name} at ${shop.name}`)}
+              aria-pressed={watching}
+              className={`flex flex-1 items-center justify-center gap-2 py-3.5 text-[13.5px] font-semibold
+                transition duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
+                focus-visible:ring-jade-300 ${
+                  watching
+                    ? 'bg-jade-50 text-jade-700 hover:bg-jade-100'
+                    : 'text-jade-700 hover:bg-jade-50 active:bg-jade-100'
+                }`}
+            >
+              <Icon name={watching ? 'check' : 'bell'} size={16} strokeWidth={watching ? 2.5 : 1.75} />
+              {watching ? 'Alert on' : 'Notify on price drop'}
             </button>
           </div>
         </section>
@@ -174,13 +188,10 @@ export default function ShopDetail({ nav, params }) {
         {/* Other stock at this shop */}
         <section className="mt-6 px-4">
           <div className="mb-2.5 flex items-center justify-between">
-            <h3 className="text-[12px] font-bold uppercase tracking-[.08em] text-ink-30">
+            <h3 className="eyebrow">
               Also at this shop
             </h3>
-            <button
-              onClick={() => setShowAll((v) => !v)}
-              className="text-[12px] font-semibold text-jade-600"
-            >
+            <button onClick={() => setShowAll((v) => !v)} className="btn-link -mr-2">
               {showAll ? 'In stock only' : 'Show all items'}
             </button>
           </div>
@@ -190,19 +201,31 @@ export default function ShopDetail({ nav, params }) {
               const p = productBySku(it.sku)
               if (!p) return null
               return (
-                <div key={it.sku} className="flex items-center gap-3 px-4 py-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-canvas text-jade-600">
+                // Tappable: compare this item across every nearby shop.
+                <button
+                  key={it.sku}
+                  onClick={() => nav.push('results', { sku: it.sku, query: p.name })}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left transition duration-150
+                    hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
+                    focus-visible:ring-jade-300 active:bg-jade-100"
+                >
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg ${
+                      it.inStock ? 'bg-jade-50 text-jade-600' : 'bg-canvas text-ink-30'
+                    }`}
+                  >
                     <Icon name={CATEGORY_ICON[p.category]} size={17} />
                   </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-[14px] font-semibold leading-tight">{p.name}</div>
-                    <div className="mt-1 flex items-center gap-2">
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[14px] font-semibold leading-tight">{p.name}</span>
+                    <span className="mt-1 flex items-center gap-2">
                       <StockBadge inStock={it.inStock} qty={it.inStock ? it.qty : null} size="sm" />
                       <FreshnessPill ts={it.updatedAt} size="sm" />
-                    </div>
-                  </div>
+                    </span>
+                  </span>
                   <Price value={it.price} size="sm" className={it.inStock ? '' : 'opacity-40'} />
-                </div>
+                  <Icon name="next" size={15} className="shrink-0 text-ink-30" />
+                </button>
               )
             })}
             {others.length === 0 && (

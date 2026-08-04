@@ -13,7 +13,7 @@ export default function ValidationPanel({ screen, onJump, current }) {
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6 flex items-center gap-2.5">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-marigold-400 text-jade-900">
+        <div className="grid h-9 w-9 place-items-center rounded-xl bg-marigold-300 text-[#4A3405]">
           <Icon name="store" size={19} strokeWidth={2} />
         </div>
         <div className="leading-none">
@@ -24,7 +24,7 @@ export default function ValidationPanel({ screen, onJump, current }) {
 
       <div className="rounded-2xl border border-white/10 bg-white/[.06] p-5 backdrop-blur">
         <div className="mb-3 flex items-center gap-2">
-          <span className="tag bg-marigold-400 text-jade-900">{v.screen}</span>
+          <span className="tag bg-marigold-300 text-[#4A3405]">{v.screen}</span>
           <span className="text-[11px] font-medium text-jade-300">{v.source}</span>
         </div>
 

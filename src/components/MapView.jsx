@@ -43,7 +43,7 @@ export default function MapView({ rows, selectedId, onSelect }) {
       {rows.map(({ shop, listing }) => {
         const sel = shop.id === selectedId
         const tone = shop.sponsored
-          ? 'bg-marigold-400 text-jade-900'
+          ? 'bg-marigold-300 text-[#4A3405]'
           : listing.inStock
             ? 'bg-jade-600 text-white'
             : 'bg-ink-30 text-white'
