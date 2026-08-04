@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Icon, { CATEGORY_ICON } from '../components/Icon'
+import Icon, { CATEGORY_ICON, CATEGORY_TINT } from '../components/Icon'
 import { CATEGORIES, CATEGORY_META } from '../data/mockData'
 
 /**
@@ -26,9 +26,12 @@ export default function Welcome({ nav }) {
   const tick = TICKER[i]
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto bg-canvas">
+    // A plain scroll container, NOT a flex column: as a flex parent, the hero
+    // was being shrunk to fit and its own overflow-hidden then clipped the
+    // headline right off the screen.
+    <div className="h-full overflow-y-auto bg-canvas">
       {/* Brand hero */}
-      <div className="shutter relative overflow-hidden bg-jade-800 px-6 pb-9 pt-11 text-white">
+      <div className="shutter relative overflow-hidden bg-jade-800 px-6 pb-10 pt-10 text-white">
         <div className="grain pointer-events-none absolute inset-0 opacity-40" />
         <div
           className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full"
@@ -36,39 +39,35 @@ export default function Welcome({ nav }) {
         />
 
         <div className="relative">
-          <div className="mb-7 flex items-center gap-2.5">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-marigold-300 text-[#4A3405]">
-              <Icon name="store" size={19} strokeWidth={2} />
+          <div className="mb-8 flex items-center gap-2.5">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-marigold-300 text-[#4A3405] shadow-[0_6px_16px_-8px_rgba(0,0,0,.6)]">
+              <Icon name="store" size={20} strokeWidth={2} />
             </div>
             <div className="leading-none">
-              <div className="text-[17px] font-extrabold tracking-tight">KacherPonno</div>
-              <div className="bn mt-0.5 text-[12px] text-jade-200">কাছের পণ্য</div>
+              <div className="font-display text-[18px] font-extrabold tracking-[-.02em]">KacherPonno</div>
+              <div className="bn mt-1 text-[12.5px] text-jade-200">কাছের পণ্য</div>
             </div>
           </div>
 
-          <h1 className="anim-rise max-w-[15rem] text-[30px] font-extrabold leading-[1.12] tracking-tight">
+          <h1 className="anim-rise max-w-[16rem] text-[33px] font-extrabold leading-[1.1] tracking-[-.025em]">
             Search your neighbourhood’s shelves.
           </h1>
-          <p className="anim-rise mt-3 max-w-[19rem] text-[14.5px] leading-relaxed text-jade-100/90">
+          <p className="anim-rise mt-3.5 max-w-[19.5rem] text-[14.5px] leading-relaxed text-jade-100/90">
             See which nearby shop has your item — the price, whether it’s actually in stock, and how far
             it is — <span className="font-semibold text-white">before you leave the house.</span>
           </p>
 
-          <div className="mt-6 flex items-center gap-5 text-[12.5px] text-jade-200">
-            <div>
-              <div className="tnum text-[19px] font-bold text-white">128</div>
-              shops nearby
-            </div>
-            <div className="h-8 w-px bg-white/15" />
-            <div>
-              <div className="tnum text-[19px] font-bold text-white">2,400+</div>
-              items listed
-            </div>
-            <div className="h-8 w-px bg-white/15" />
-            <div>
-              <div className="tnum text-[19px] font-bold text-white">2 km</div>
-              around you
-            </div>
+          <div className="mt-7 grid grid-cols-3 gap-2">
+            {[
+              { v: '128', l: 'shops nearby' },
+              { v: '2,400+', l: 'items listed' },
+              { v: '2 km', l: 'around you' },
+            ].map((s) => (
+              <div key={s.l} className="rounded-xl bg-white/10 px-3 py-2.5 ring-1 ring-white/10">
+                <div className="tnum text-[19px] font-extrabold leading-none text-white">{s.v}</div>
+                <div className="mt-1.5 text-[11.5px] leading-tight text-jade-200">{s.l}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -82,7 +81,7 @@ export default function Welcome({ nav }) {
           <p className="min-w-0 flex-1 truncate text-[12.5px] text-ink-50">
             <span className="font-semibold text-ink">“{tick.q}”</span> searched in {tick.where}
           </p>
-          <span className="shrink-0 text-[11px] font-medium text-jade-500">{tick.when}</span>
+          <span className="shrink-0 text-[11px] font-semibold text-jade-600">{tick.when}</span>
         </div>
       </div>
 
@@ -93,9 +92,16 @@ export default function Welcome({ nav }) {
         </p>
         <div className="grid grid-cols-4 gap-2">
           {CATEGORIES.map((c) => (
-            <div key={c} className="rounded-xl border border-line bg-surface px-1 py-2.5 text-center">
-              <Icon name={CATEGORY_ICON[c]} size={18} className="mx-auto text-jade-500" />
-              <div className="bn mt-1.5 text-[11px] font-semibold text-ink-70">{CATEGORY_META[c].bn}</div>
+            <div
+              key={c}
+              className="rounded-2xl border border-line bg-surface px-1 py-3 text-center shadow-card"
+            >
+              <span
+                className={`mx-auto grid h-9 w-9 place-items-center rounded-xl ${CATEGORY_TINT[c]}`}
+              >
+                <Icon name={CATEGORY_ICON[c]} size={18} strokeWidth={2} />
+              </span>
+              <div className="bn mt-2 text-[11.5px] font-semibold text-ink-70">{CATEGORY_META[c].bn}</div>
             </div>
           ))}
         </div>
@@ -143,7 +149,7 @@ export default function Welcome({ nav }) {
           <Icon name="next" size={20} className="text-ink-30 transition group-hover:translate-x-0.5 group-hover:text-marigold-500" />
         </button>
 
-        <div className="mt-5 flex items-center justify-center gap-1.5 text-[11.5px] text-ink-30">
+        <div className="mt-5 flex items-center justify-center gap-1.5 text-[11.5px] text-ink-50">
           <Icon name="pin" size={13} />
           Sylhet, Bangladesh · demo data
         </div>

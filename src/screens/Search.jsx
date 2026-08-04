@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import Icon, { CATEGORY_ICON } from '../components/Icon'
+import Icon, { CATEGORY_ICON, CATEGORY_TINT } from '../components/Icon'
 import { Chip, EmptyState, TopBar } from '../components/ui'
 import { CATEGORIES, CATEGORY_META, TRENDING } from '../data/mockData'
 import { taka } from '../lib/format'
@@ -90,8 +90,9 @@ export default function Search({ nav }) {
           </div>
         </div>
 
-        {/* Category chips */}
-        <div className="flex gap-2 overflow-x-auto px-3 pb-3.5">
+        {/* Category chips — masked at the right edge so a clipped chip reads
+            as "scroll for more" rather than as a broken layout. */}
+        <div className="scroll-fade-r flex gap-2 overflow-x-auto px-3 pb-3.5">
           {CATEGORIES.map((c) => {
             const on = cat === c
             return (
@@ -165,12 +166,12 @@ export default function Search({ nav }) {
                     className="card-tap flex items-center gap-3 p-3.5 text-left focus-visible:outline-none
                       focus-visible:ring-[3px] focus-visible:ring-jade-300"
                   >
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-jade-50 text-jade-600">
-                      <Icon name={CATEGORY_ICON[c]} size={19} />
+                    <span className={`grid h-11 w-11 place-items-center rounded-xl ${CATEGORY_TINT[c]}`}>
+                      <Icon name={CATEGORY_ICON[c]} size={20} strokeWidth={2} />
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate text-[13.5px] font-bold leading-tight">{c}</span>
-                      <span className="bn block text-[11.5px] text-ink-30">{CATEGORY_META[c].bn}</span>
+                      <span className="bn block text-[11.5px] text-ink-50">{CATEGORY_META[c].bn}</span>
                     </span>
                   </button>
                 ))}
@@ -220,8 +221,12 @@ export default function Search({ nav }) {
                       hover:bg-jade-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset
                       focus-visible:ring-jade-300 active:bg-jade-100"
                   >
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-jade-50 text-jade-600">
-                      <Icon name={CATEGORY_ICON[p.category]} size={18} />
+                    <span
+                      className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${
+                        CATEGORY_TINT[p.category]
+                      }`}
+                    >
+                      <Icon name={CATEGORY_ICON[p.category]} size={18} strokeWidth={2} />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[14.5px] font-semibold leading-tight">

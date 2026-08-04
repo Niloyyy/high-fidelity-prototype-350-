@@ -11,7 +11,7 @@ export function TopBar({ title, subtitle, onBack, right, tone = 'light', childre
   return (
     <header
       className={`relative z-20 shrink-0 ${
-        dark ? 'band shutter text-white' : 'border-b border-line bg-surface/95 text-ink backdrop-blur'
+        dark ? 'band text-white' : 'border-b border-line bg-surface/95 text-ink backdrop-blur'
       }`}
     >
       <div className="flex items-center gap-1.5 px-3 pb-3 pt-3.5">
@@ -142,7 +142,7 @@ export function Toggle({ on, onChange, label, disabled }) {
 export function Segmented({ options, value, onChange, className = '', tone = 'light' }) {
   const dark = tone === 'dark'
   return (
-    <div className={`flex rounded-xl p-1 ${dark ? 'bg-white/10' : 'bg-canvas'} ${className}`}>
+    <div className={`flex min-w-0 rounded-xl p-1 ${dark ? 'bg-white/10' : 'bg-canvas'} ${className}`}>
       {options.map((o) => {
         const active = o.value === value
         const state = active
@@ -154,8 +154,10 @@ export function Segmented({ options, value, onChange, className = '', tone = 'li
           <button
             key={o.value}
             onClick={() => onChange(o.value)}
-            className={`flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5
-              text-[13px] font-semibold transition duration-150 ease-swift active:scale-[.97] ${state}`}
+            className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 truncate rounded-lg px-2 py-1.5
+              text-[13px] font-semibold transition duration-150 ease-swift
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jade-300
+              active:scale-[.97] ${state}`}
           >
             {o.icon && <Icon name={o.icon} size={15} />}
             {o.label}

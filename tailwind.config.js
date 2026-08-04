@@ -54,12 +54,27 @@ export default {
           600: '#9E4632',
           700: '#7D3727',
         },
+        /* Darkened across the board: the previous ink-30 (#94A39E) was used for
+           section labels and failed WCAG AA on white at ~2.8:1. Every step here
+           now passes AA for its intended use. */
         ink: {
-          DEFAULT: '#14241F',
-          70: '#3D504A',
-          50: '#667772',
-          30: '#94A39E',
-          20: '#B8C3BF',
+          DEFAULT: '#132420', //  15.1:1 on white — headings, primary text
+          70: '#35473F', //   8.9:1 — body text
+          50: '#556760', //   5.6:1 — secondary text, section labels
+          30: '#7C8D86', //   3.5:1 — decorative/hint text only, never body
+          20: '#AEBAB5', //   borders, disabled fills
+        },
+        /* Category wayfinding only. Never used for status — status is always
+           jade / marigold / clay. */
+        cat: {
+          pharmacy: '#2E7160',
+          'pharmacy-bg': '#DEEDE6',
+          electronics: '#3D5A8C',
+          'electronics-bg': '#E3E9F5',
+          mobile: '#6B4A7C',
+          'mobile-bg': '#EEE5F3',
+          hardware: '#8A5C2B',
+          'hardware-bg': '#F4E9DA',
         },
         canvas: '#F5F8F6',
         surface: '#FFFFFF',
@@ -67,7 +82,12 @@ export default {
         'line-soft': '#F0F5F2',
       },
       fontFamily: {
+        // Inter for UI and long text — it stays legible at 12px.
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Plus Jakarta Sans for headings, prices and numbers: rounder, warmer
+        // and more confident at large sizes, which is what gives the screens
+        // their retail feel without borrowing anyone's brand.
+        display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'sans-serif'],
         bn: ['"Hind Siliguri"', 'Inter', 'sans-serif'],
       },
       borderRadius: {

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import Icon, { CATEGORY_ICON } from '../components/Icon'
+import Icon, { CATEGORY_ICON, CATEGORY_TINT } from '../components/Icon'
 import { EmptyState, FreshnessPill, Segmented, Sheet, StatTile, Toggle, TopBar } from '../components/ui'
 import { OWNER_STATS, demandFor } from '../data/mockData'
 import { taka } from '../lib/format'
@@ -155,7 +155,7 @@ export default function Dashboard({ nav }) {
                   <Icon name="sparkle" size={16} strokeWidth={2.2} />
                   See what ৳500/month changes
                 </button>
-                <p className="mt-1.5 text-center text-[11px] text-ink-30">
+                <p className="mt-1.5 text-center text-[11px] text-ink-50">
                   ৳500/month ≈ ৳17/day · cancel anytime
                 </p>
               </div>
@@ -300,7 +300,7 @@ export default function Dashboard({ nav }) {
                   >
                     <span
                       className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-colors ${
-                        it.inStock ? 'bg-jade-50 text-jade-600' : 'bg-canvas text-ink-30'
+                        it.inStock ? CATEGORY_TINT[p.category] : 'bg-canvas text-ink-30'
                       }`}
                     >
                       <Icon name={CATEGORY_ICON[p.category]} size={19} />
@@ -332,7 +332,7 @@ export default function Dashboard({ nav }) {
             </ul>
           )}
 
-          <p className="mt-4 px-1 text-center text-[11.5px] leading-relaxed text-ink-30">
+          <p className="mt-4 px-1 text-center text-[11.5px] leading-relaxed text-ink-50">
             Tap the switch to change stock instantly — no save button.
             <br />
             Tap the item name to edit price or quantity.
@@ -369,7 +369,7 @@ export default function Dashboard({ nav }) {
         {/* Before / after ranking */}
         <div className="mb-4 grid grid-cols-2 gap-2.5">
           <div className="rounded-xl border border-line bg-canvas p-3">
-            <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-ink-30">Today</div>
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-ink-50">Today</div>
             {['Sylhet Mobile Gallery', 'Digital Point', 'Two more shops…'].map((n, i) => (
               <div key={n} className="mb-1 flex items-center gap-1.5 text-[11.5px] text-ink-50">
                 <span className="tnum w-3 font-bold">{i + 1}</span>
@@ -435,7 +435,7 @@ export default function Dashboard({ nav }) {
               </button>
             ))}
           </div>
-          <p className="mt-2 text-[11.5px] leading-relaxed text-ink-30">
+          <p className="mt-2 text-[11.5px] leading-relaxed text-ink-50">
             Asked in-product so the answer comes from real shopkeepers, not from us guessing.
           </p>
         </div>

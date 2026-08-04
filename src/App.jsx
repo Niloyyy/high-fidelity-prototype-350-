@@ -182,11 +182,11 @@ function Prototype() {
                   </button>
                 }
               >
-                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[.09em] text-ink-30">
+                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[.09em] text-ink-50">
                   The validation question
                 </p>
                 <p className="mb-4 text-[15px] font-semibold leading-snug">“{v.question}”</p>
-                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[.09em] text-ink-30">
+                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[.09em] text-ink-50">
                   What we designed in response
                 </p>
                 <p className="text-[13.5px] leading-relaxed text-ink-70">{v.decision}</p>

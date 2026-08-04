@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import Icon, { CATEGORY_ICON } from '../components/Icon'
+import Icon, { CATEGORY_ICON, CATEGORY_TINT } from '../components/Icon'
 import { FreshnessPill, Price, Sheet, StockBadge, TopBar } from '../components/ui'
 import { km, rickshawMins, taka, walkMins } from '../lib/format'
 import { useStore } from '../lib/store'
@@ -95,8 +95,12 @@ export default function ShopDetail({ nav, params }) {
 
             <div className="p-4">
               <div className="flex items-start gap-3">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-canvas text-jade-600">
-                  <Icon name={CATEGORY_ICON[product?.category] || 'box'} size={21} />
+                <span
+                  className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${
+                    CATEGORY_TINT[product?.category] || 'bg-canvas text-ink-50'
+                  }`}
+                >
+                  <Icon name={CATEGORY_ICON[product?.category] || 'box'} size={22} strokeWidth={2} />
                 </span>
                 <div className="min-w-0 flex-1">
                   <h2 className="text-[16.5px] font-bold leading-tight">{product?.name}</h2>
@@ -107,11 +111,11 @@ export default function ShopDetail({ nav, params }) {
               {/* price / stock / distance — the three decision facts, biggest on screen */}
               <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl bg-canvas p-3">
                 <div>
-                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-30">Price</div>
+                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-50">Price</div>
                   <Price value={listing.price} size="md" />
                 </div>
                 <div>
-                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-30">Stock</div>
+                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-50">Stock</div>
                   <div
                     className={`tnum text-[22px] font-extrabold leading-none ${
                       listing.inStock ? 'text-jade-800' : 'text-clay-600'
@@ -124,7 +128,7 @@ export default function ShopDetail({ nav, params }) {
                   </div>
                 </div>
                 <div>
-                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-30">Distance</div>
+                  <div className="mb-1 text-[10.5px] font-bold uppercase tracking-wider text-ink-50">Distance</div>
                   <div className="tnum text-[22px] font-extrabold leading-none text-jade-800">
                     {shop.distanceKm.toFixed(1)}
                   </div>
@@ -134,12 +138,15 @@ export default function ShopDetail({ nav, params }) {
 
               <div className="mt-3 flex items-center justify-between">
                 <StockBadge inStock={listing.inStock} qty={listing.inStock ? listing.qty : null} />
+                {/* A real bordered control, not a text link: this is the trust
+                    loop, and it has to look pressable to get used. */}
                 <button
                   onClick={() => setReportOpen(true)}
-                  className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[12.5px] font-semibold text-ink-50 transition active:scale-95 hover:bg-canvas hover:text-clay-600"
+                  className="btn btn-sm border border-line bg-surface text-ink-50 transition
+                    hover:border-clay-200 hover:bg-clay-50 hover:text-clay-600 focus-visible:ring-clay-200"
                 >
                   <Icon name="flag" size={14} />
-                  Report wrong price or stock
+                  Report wrong price
                 </button>
               </div>
 
@@ -210,8 +217,8 @@ export default function ShopDetail({ nav, params }) {
                     focus-visible:ring-jade-300 active:bg-jade-100"
                 >
                   <span
-                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg ${
-                      it.inStock ? 'bg-jade-50 text-jade-600' : 'bg-canvas text-ink-30'
+                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${
+                      it.inStock ? CATEGORY_TINT[p.category] : 'bg-canvas text-ink-30'
                     }`}
                   >
                     <Icon name={CATEGORY_ICON[p.category]} size={17} />
@@ -229,14 +236,14 @@ export default function ShopDetail({ nav, params }) {
               )
             })}
             {others.length === 0 && (
-              <p className="px-4 py-6 text-center text-[13px] text-ink-30">Nothing else in stock right now.</p>
+              <p className="px-4 py-6 text-center text-[13px] text-ink-50">Nothing else in stock right now.</p>
             )}
           </div>
         </section>
       </main>
 
       {/* Sticky primary action */}
-      <div className="safe-b absolute inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur">
+      <div className="bottom-scrim safe-b absolute inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur">
         <button
           onClick={() => setDirectionsOpen(true)}
           className="btn btn-lg btn-primary w-full"
@@ -246,7 +253,7 @@ export default function ShopDetail({ nav, params }) {
           {listing.inStock ? 'Get Directions' : 'Out of stock — try another shop'}
         </button>
         {listing.inStock && (
-          <p className="mt-1.5 text-center text-[11.5px] text-ink-30">
+          <p className="mt-1.5 text-center text-[11.5px] text-ink-50">
             {km(shop.distanceKm)} · {rickshawMins(shop.distanceKm)} min rickshaw · {walkMins(shop.distanceKm)} min walk
           </p>
         )}
@@ -280,7 +287,7 @@ export default function ShopDetail({ nav, params }) {
               </button>
             )
           })}
-          <p className="pt-1 text-[12px] leading-relaxed text-ink-30">
+          <p className="pt-1 text-[12px] leading-relaxed text-ink-50">
             Reports are sent straight to the shop and the listing is marked unconfirmed until they respond.
           </p>
         </div>

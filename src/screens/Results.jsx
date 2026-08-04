@@ -69,7 +69,7 @@ export default function Results({ nav, params }) {
             : `${rows.length} shops list it · none in stock right now`
         }
       >
-        <div className="flex items-center gap-2 px-3 pb-3">
+        <div className="flex items-center gap-2 overflow-hidden px-3 pb-3">
           <Segmented
             tone="dark"
             className="flex-1"
@@ -95,7 +95,7 @@ export default function Results({ nav, params }) {
 
       {/* Filter strip — both filters actually narrow the result set */}
       <div className="shrink-0 border-b border-line bg-surface">
-        <div className="flex items-center gap-2 overflow-x-auto px-4 py-2.5">
+        <div className="scroll-fade-r flex items-center gap-2 overflow-x-auto px-4 py-2.5">
           <button
             onClick={() => setInStockOnly((v) => !v)}
             aria-pressed={inStockOnly}
@@ -120,10 +120,10 @@ export default function Results({ nav, params }) {
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-1.5 px-4 pb-2 text-[11.5px] font-medium text-ink-30">
-          <Icon name="refresh" size={13} />
-          Showing <span className="tnum font-bold text-ink-50">{rows.length}</span> of {totalNearby} shops
-          that list this · stock confirmed by the shops themselves
+        <div className="flex items-center gap-1.5 px-4 pb-2.5 text-[11.5px] font-medium text-ink-50">
+          <Icon name="refresh" size={13} className="shrink-0" />
+          Showing <span className="tnum font-bold text-ink">{rows.length}</span> of {totalNearby} nearby
+          shops · stock confirmed by the shops
         </div>
       </div>
 
@@ -254,7 +254,7 @@ export default function Results({ nav, params }) {
                       <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-2.5">
                         <StockBadge inStock={listing.inStock} qty={listing.inStock ? listing.qty : null} />
                         <FreshnessPill ts={listing.updatedAt} />
-                        <span className="ml-auto flex items-center gap-1 text-[11.5px] font-medium text-ink-30">
+                        <span className="ml-auto flex items-center gap-1 text-[11.5px] font-medium text-ink-50">
                           <Icon name="clock" size={12} />
                           {rickshawMins(shop.distanceKm)} min by rickshaw
                         </span>
@@ -273,7 +273,7 @@ export default function Results({ nav, params }) {
             </ul>
           )}
 
-          <p className="mt-5 px-1 text-center text-[11.5px] leading-relaxed text-ink-30">
+          <p className="mt-5 px-1 text-center text-[11.5px] leading-relaxed text-ink-50">
             Distances are from Zindabazar point. Stock is what each shop last confirmed —
             <br />
             tap a shop to report anything that looks wrong.

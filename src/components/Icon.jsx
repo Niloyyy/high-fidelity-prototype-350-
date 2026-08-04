@@ -72,3 +72,16 @@ export const CATEGORY_ICON = {
   'Mobile Accessories': 'mobile',
   Hardware: 'wrench',
 }
+
+/**
+ * Category wayfinding colours. Used ONLY to identify a vertical — never to
+ * signal status, which is always jade (good) / marigold (paid) / clay (bad).
+ * Four muted tints so a shopper can tell a pharmacy row from a hardware row
+ * at a glance without reading it.
+ */
+export const CATEGORY_TINT = {
+  Pharmacy: 'bg-cat-pharmacy-bg text-cat-pharmacy',
+  Electronics: 'bg-cat-electronics-bg text-cat-electronics',
+  'Mobile Accessories': 'bg-cat-mobile-bg text-cat-mobile',
+  Hardware: 'bg-cat-hardware-bg text-cat-hardware',
+}

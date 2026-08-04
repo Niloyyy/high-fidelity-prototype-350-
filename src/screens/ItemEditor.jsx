@@ -140,7 +140,7 @@ export default function ItemEditor({ nav, params = {} }) {
                   <Icon name="upload" size={20} strokeWidth={2} />
                 </span>
                 <span className="text-[12.5px] font-bold leading-tight">Spreadsheet</span>
-                <span className="text-[10.5px] leading-tight text-ink-30">bulk</span>
+                <span className="text-[10.5px] leading-tight text-ink-50">bulk</span>
               </button>
 
               <button
@@ -151,7 +151,7 @@ export default function ItemEditor({ nav, params = {} }) {
                   <Icon name="list" size={20} strokeWidth={2} />
                 </span>
                 <span className="text-[12.5px] font-bold leading-tight">Type it</span>
-                <span className="text-[10.5px] leading-tight text-ink-30">1 item</span>
+                <span className="text-[10.5px] leading-tight text-ink-50">1 item</span>
               </button>
             </div>
           </section>
@@ -252,7 +252,7 @@ export default function ItemEditor({ nav, params = {} }) {
             </div>
           </div>
 
-          <p className="mt-3 px-1 text-[11.5px] leading-relaxed text-ink-30">
+          <p className="mt-3 px-1 text-[11.5px] leading-relaxed text-ink-50">
             Saving stamps this listing “updated just now”, which is what shoppers see before deciding to
             travel to your shop.
           </p>
@@ -260,7 +260,7 @@ export default function ItemEditor({ nav, params = {} }) {
       </main>
 
       {/* Sticky save */}
-      <div className="safe-b absolute inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur">
+      <div className="bottom-scrim safe-b absolute inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur">
         <button onClick={onSave} disabled={!valid} className="btn btn-lg btn-primary w-full">
           <Icon name="check" size={18} strokeWidth={2.4} />
           {editingSku ? 'Save changes' : 'Add to my shop'}
@@ -339,7 +339,7 @@ export default function ItemEditor({ nav, params = {} }) {
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-[11.5px] leading-relaxed text-ink-30">
+            <p className="mt-3 text-[11.5px] leading-relaxed text-ink-50">
               Simulated for the prototype. In interviews we want to see whether shopkeepers actually keep a
               sheet like this, or whether the barcode path wins.
             </p>

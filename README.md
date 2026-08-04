@@ -77,8 +77,17 @@ hurry, often outdoors, so it has to stay calm and legible rather than shout.
 Every interactive element routes through one button/chip/field class, so hit area (≥36 px), hover,
 press, disabled and keyboard focus behave identically everywhere. Focus rings are `focus-visible`
 only — keyboard users get a clear ring, mouse users never see a stray outline.
-- **Type** — Inter for UI with `tabular-nums` on every price, quantity and distance so shoppers can
-  compare down a column; Hind Siliguri for the Bangla wordmark and category labels.
+- **Category tints** — pharmacy jade, electronics indigo, mobile plum, hardware umber. Used *only*
+  to identify a vertical, never to signal status, so the four categories are separable at a glance
+  without diluting the status palette.
+- **Type** — a two-face system. **Plus Jakarta Sans** carries headings, prices and every number:
+  rounder and more confident at large sizes, which is what gives the screens their retail feel.
+  **Inter** carries UI and body text, where it stays legible down to 12px. **Hind Siliguri** carries
+  the Bangla wordmark and category labels. Prices, quantities and distances are `tabular-nums` so
+  shoppers can compare them down a column.
+- **Contrast** — the ink ramp is tuned so every step passes WCAG AA for its intended use: body text
+  at 8.9:1, secondary text and section labels at 5.6:1. The lightest step is reserved for icons and
+  separators and never carries readable text.
 - **Texture** — headers carry a faint corrugated *shutter* pattern, lifted from the roll-down
   shutters of Bandar Bazar.
 - **One motion language** — navigation is a horizontal push/pop, sheets rise from the bottom, state
