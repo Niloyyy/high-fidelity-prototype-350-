@@ -29,6 +29,143 @@ available from the floating **ⓘ** button.
 
 ---
 
+## Screen by screen
+
+Eleven states across the two flows. Every screenshot below is captured by driving the real app —
+`npm run screenshots` replays the clicks and re-shoots them — so the images can't drift from what the
+prototype actually does.
+
+### 1 · Welcome
+
+<img src="docs/screenshots/01-welcome.png" width="270" alt="Welcome screen">
+
+The pitch, stated plainly and then immediately backed with numbers. A ticker cycles real nearby
+searches so the local index reads as live, the four categories are shown in Bangla, and the only
+decision on the screen is which flow you're in.
+
+- **Two role doors** — Shopper (B2C) or Shop Owner (B2B). Neither audience reads copy meant for the other.
+- **Supply proof** — 128 shops · 2,400+ items · 2 km catchment.
+- *Answers:* how do people react to "Google Search for your local shelves"?
+
+### 2 · Search
+
+<img src="docs/screenshots/02-search.png" width="270" alt="Search screen">
+<img src="docs/screenshots/03-search-live.png" width="270" alt="Search filtering live as you type">
+
+Search is **item-first, not shop-first**, because shoppers start from the product. Typing filters the
+real catalogue on every keystroke — the right-hand shot is the same screen after typing "charger".
+
+- **Live suggestions** carry the answer before you commit: *in stock at 2 shops · from ৳1,290 · 0.9 km*.
+- **Recent searches** persist for the session and can be cleared; **trending** chips and four
+  colour-coded **category tiles** give a start when you don't have a term in mind.
+- **Category chips** in the header filter the catalogue and combine with the typed query.
+- **Empty state does real work** — if nothing nearby stocks it, "Notify me when available" registers
+  an alert and the button flips to a confirmed state instead of leaving a dead end.
+- *Answers:* what did you actually do the last time you needed a specialty item?
+
+### 3 · Results
+
+<img src="docs/screenshots/04-results.png" width="270" alt="Results list">
+
+The comparison screen. Price, stock and distance are the three biggest things in every row, and each
+row states when the shop last confirmed it.
+
+- **Sponsored is pinned first and labelled** — tapping the label opens a disclosure explaining that
+  paying never changes the price, stock or distance you see.
+- **Freshness stamp** on every listing (`9m ago`, `4h ago`) with a colour-coded dot.
+- **Sort** by best match, price or distance; **filter** by in-stock and by radius (1 km / 2 km / any).
+  The counter under the filters updates: *showing 3 of 3 nearby shops*.
+- **Automatic tags** mark the lowest price and the closest shop wherever they land.
+- **Travel estimate** in the local unit — minutes by rickshaw.
+- *Answers:* what do you need to see before you'd tap "Get Directions"?
+
+### 4 · Results — map view
+
+<img src="docs/screenshots/05-results-map.png" width="270" alt="Results map view">
+
+The same result set re-projected onto a lightweight map, for the "is it on my way?" question a list
+can't answer.
+
+- **Price pins** coloured by the same three states used everywhere — sponsored, in stock, out of stock.
+- Tap a pin to raise a mini card, tap the card to open the shop.
+
+### 5 · Shop Detail
+
+<img src="docs/screenshots/06-shop-detail.png" width="270" alt="Shop detail">
+
+Everything needed to decide to travel, above the fold.
+
+- **The searched item** gets a dedicated block: price, units left and distance as three large figures,
+  with the freshness stamp beside it.
+- **Get Directions** is a sticky primary action; it opens a route sheet with distance, rickshaw and
+  walking times, and a reminder of what the shop confirmed.
+- **Call shop** and **Notify on price drop** — the alert is real state and toggles on and off.
+- **Also at this shop** lists the rest of the in-stock inventory; tapping any item opens a full price
+  comparison for it across every nearby shop.
+- *Answers:* what would make you stop using the app?
+
+### 6 · Report a wrong listing
+
+<img src="docs/screenshots/07-report-sheet.png" width="270" alt="Report sheet">
+
+The trust loop. A wasted trip is the churn risk, so a let-down shopper fixes the data instead of
+silently leaving.
+
+- Four one-tap reasons: out of stock, price differs, shop closed, shop gone.
+- The listing is then **flagged on both the shop detail and the results row**, so the next shopper
+  sees the warning too.
+
+### 7 · Inventory Dashboard (shop owner)
+
+<img src="docs/screenshots/08-dashboard.png" width="270" alt="Inventory dashboard">
+
+Built around one constraint from the retailer interview: if updating stock is effortful, shopkeepers
+abandon the app.
+
+- **One-tap stock toggles** on the row itself. Nothing opens, nothing saves — and the freshness stamp
+  resets to *just now*, which is what makes the shopper-side trust signal mean anything.
+- **The upsell is quantified, never generic** — *42 nearby searches for items you carry · 12 shoppers
+  tapped directions to shops ranked above you · you rank #6*, priced against the fee at ≈৳17/day.
+- **Demand analytics** sit locked behind the Premium tier and unlock live when it's switched on.
+- **Stale-listing nudge** — *3 items haven't been confirmed in over a week* with a one-tap "Confirm all".
+- Search and filter the inventory (all / in stock / out); tap any item name to edit it.
+- *Answers:* how many minutes a day would you really spend, and is BDT 500/month worth it?
+
+### 8 · Premium
+
+<img src="docs/screenshots/09-premium.png" width="270" alt="Premium sheet">
+
+- **Before/after ranking** — you at #6 today, #1 with Premium, shown side by side.
+- Top placement, basic analytics and push offers, each tied to a measured number.
+- Asks the retailer interview question **in-product**: "what would prove ৳500 was worth it?"
+- Subscribing genuinely changes the product: the shop becomes Sponsored and is ranked first with a
+  label the next time you search the shopper flow.
+
+### 9 · Add / Update Item
+
+<img src="docs/screenshots/10-add-item.png" width="270" alt="Add item screen">
+<img src="docs/screenshots/11-barcode-scan.png" width="270" alt="Simulated barcode scanner">
+
+Three ways in, offered as equals because we refuse to assume which one a shopkeeper prefers.
+
+- **Scan barcode** — a simulated scanner (right) resolves a code and auto-fills name, category and a
+  suggested price.
+- **Spreadsheet** — a simulated CSV import parses rows, previews them and bulk-applies.
+- **Type it** — the manual form: name, category, price, quantity, in-stock.
+- On save the item appears in the dashboard **and becomes searchable by shoppers**, because both flows
+  share one catalogue.
+- *Answers:* would you rather scan a barcode, tick items manually, or upload a spreadsheet?
+
+### 10 · Pitch view (laptop)
+
+<img src="docs/screenshots/12-pitch-panel.png" width="620" alt="Desktop pitch view with validation panel">
+
+On a laptop the app sits in a phone frame with a panel that names, for whatever screen you're on, the
+validation question it answers and the design decision that answers it — plus jump-to-state shortcuts
+for a live demo. On a phone the same note is behind the floating **ⓘ** button.
+
+---
+
 ## The three things this prototype has to prove
 
 ### 1. It functions — it is not six screens linked together
@@ -143,14 +280,26 @@ Two extra validation instruments are built into the product rather than bolted o
 
 ```
 src/
-  data/mockData.js     Catalogue, 10 Sylhet shops, owner analytics, barcode + CSV fixtures,
-                       and the screen → validation-question map
-  lib/store.jsx        The single in-memory store shared by both flows
-  lib/format.js        BDT formatting, "time ago", freshness tiers, rickshaw/walk estimates
-  components/          Icon set, UI kit, mini-map, validation pitch panel
-  screens/             Welcome, Search, Results, ShopDetail, Dashboard, ItemEditor
-  App.jsx              Phone frame, push/pop navigation stack, pitch panel
+  data/mockData.js       Catalogue, 10 Sylhet shops, owner analytics, barcode + CSV fixtures,
+                         and the screen → validation-question map
+  lib/store.jsx          The single in-memory store shared by both flows
+  lib/format.js          BDT formatting, "time ago", freshness tiers, rickshaw/walk estimates
+  components/            Icon set, UI kit, mini-map, validation pitch panel
+  screens/               Welcome, Search, Results, ShopDetail, Dashboard, ItemEditor
+  App.jsx                Phone frame, push/pop navigation stack, pitch panel
+docs/screenshots/        The images used above
+scripts/screenshots.mjs  Regenerates them by driving the running app
 ```
+
+### Regenerating the screenshots
+
+```bash
+npm run dev                      # terminal 1
+npm run screenshots              # terminal 2
+```
+
+Uses your local Chrome via `puppeteer-core` — no browser download. Override with
+`CHROME_PATH=/path/to/chrome` or `APP_URL=http://localhost:5173/` if your setup differs.
 
 Mock data covers all four categories — Pharmacy (Napa Extra, Seclo, Orsaline, BP monitor),
 Electronics (HDMI cable, multimeter, LED bulb), Mobile Accessories (65W charger, power bank,
